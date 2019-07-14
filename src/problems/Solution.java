@@ -1,10 +1,6 @@
 package problems;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 public class Solution {
 
@@ -312,5 +308,76 @@ public class Solution {
         }
         memo[i][j] = ans ? Result.TRUE : Result.FALSE;
         return ans;
+    }
+
+    public TreeNode recoverFromPreorder(String S) {
+        Queue<TreeNode> nodeQueue = new LinkedList<>();
+        Queue<Integer> depthQueue = new LinkedList<>();
+        generateNodeQueues(S, nodeQueue, depthQueue);
+        if (nodeQueue.size() == 0) {
+            return null;
+        }
+        Stack<TreeNode> nodeStack = new Stack<>();
+        Stack<Integer> depthStack = new Stack<>();
+
+        TreeNode root = nodeQueue.remove();
+        int depth = depthQueue.remove();
+        nodeStack.push(root);
+        depthStack.push(depth);
+
+        while (nodeQueue.size() > 0) {
+            TreeNode node = nodeQueue.remove();
+            depth = depthQueue.remove();
+
+            TreeNode parent = null;
+            int parentDepth = -1;
+            while (true) {
+                parent = nodeStack.pop();
+                parentDepth = depthStack.pop();
+                if (parentDepth == depth - 1) {
+                    break;
+                }
+            }
+            if (parent.left == null) {
+                parent.left = node;
+                nodeStack.push(parent);
+                depthStack.push(parentDepth);
+            } else {
+                parent.right = node;
+            }
+            nodeStack.push(node);
+            depthStack.push(depth);
+        }
+        return root;
+    }
+
+    private void generateNodeQueues(String S, Queue<TreeNode> nodeQueue, Queue<Integer> depthQueue) {
+        if (S.length() == 0) {
+            return;
+        }
+        boolean isDigit = false;
+        int depth = 0;
+        int value = 0;
+        for (int i = 0; i < S.length(); i++) {
+            if ('-' != S.charAt(i)) {
+                if (isDigit) {
+                    value = value * 10 + S.charAt(i) - '0';
+                } else {
+                    isDigit = true;
+                    value = S.charAt(i) - '0';
+                }
+            } else {
+                if (!isDigit) {
+                    depth++;
+                } else {
+                    nodeQueue.add(new TreeNode(value));
+                    depthQueue.add(depth);
+                    isDigit = false;
+                    depth = 1;
+                }
+            }
+        }
+        nodeQueue.add(new TreeNode(value));
+        depthQueue.add(depth);
     }
 }
