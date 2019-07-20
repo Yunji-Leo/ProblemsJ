@@ -385,32 +385,32 @@ public class Solution {
         if (k == 0 || prices.length == 0)
             return 0;
 
-        if (2*k>prices.length){
+        if (2 * k > prices.length) {
             int result = 0;
-            for(int i = 0; i<prices.length-1; i++){
-                if(prices[i+1]>prices[i]){
-                    result += prices[i+1]-prices[i];
+            for (int i = 0; i < prices.length - 1; i++) {
+                if (prices[i + 1] > prices[i]) {
+                    result += prices[i + 1] - prices[i];
                 }
             }
             return result;
         }
 
-        int[][][] dp = new int[prices.length+1][k+1][2];
+        int[][][] dp = new int[prices.length + 1][k + 1][2];
 
         dp[0][0][1] = Integer.MIN_VALUE;
 
-        for(int i = 1; i < prices.length+1; i++){
-            dp[i][0][1] = Math.max(dp[i-1][0][1], -prices[i-1]);
+        for (int i = 1; i < prices.length + 1; i++) {
+            dp[i][0][1] = Math.max(dp[i - 1][0][1], -prices[i - 1]);
         }
 
-        for(int i = 1; i <= k ; i++){
+        for (int i = 1; i <= k; i++) {
             dp[0][i][1] = -prices[0];
         }
 
-        for(int i = 1; i < prices.length+1; i++){
-            for(int j = 1; j<=k; j++){
-                dp[i][j][0] = Math.max(dp[i-1][j][0],dp[i-1][j-1][1]+prices[i-1]);
-                dp[i][j][1] = Math.max(dp[i-1][j][1],dp[i-1][j][0]-prices[i-1]);
+        for (int i = 1; i < prices.length + 1; i++) {
+            for (int j = 1; j <= k; j++) {
+                dp[i][j][0] = Math.max(dp[i - 1][j][0], dp[i - 1][j - 1][1] + prices[i - 1]);
+                dp[i][j][1] = Math.max(dp[i - 1][j][1], dp[i - 1][j][0] - prices[i - 1]);
             }
         }
 
@@ -419,20 +419,20 @@ public class Solution {
 
     public int maxArea(int[] height) {
         int left = 0;
-        int right = height.length -1;
+        int right = height.length - 1;
         int result = 0;
 
-        while(left<right){
+        while (left < right) {
             int minH = -1;
             int wide = right - left;
-            if (height[left]<=height[right]){
+            if (height[left] <= height[right]) {
                 minH = height[left];
                 left++;
-            }else {
+            } else {
                 minH = height[right];
                 right--;
             }
-            result = Math.max(result, wide*minH);
+            result = Math.max(result, wide * minH);
         }
         return result;
     }
@@ -442,27 +442,53 @@ public class Solution {
         String[] C = {"", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM"};
         String[] X = {"", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC"};
         String[] I = {"", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"};
-        return M[num/1000] + C[(num%1000)/100] + X[(num%100)/10] + I[num%10];
+        return M[num / 1000] + C[(num % 1000) / 100] + X[(num % 100) / 10] + I[num % 10];
 
     }
 
     public int romanToInt(String s) {
         HashMap<Character, Integer> roman = new HashMap<>();
-        roman.put('M',1000);
-        roman.put('D',500);
-        roman.put('C',100);
-        roman.put('L',50);
-        roman.put('X',10);
-        roman.put('V',5);
-        roman.put('I',1);
+        roman.put('M', 1000);
+        roman.put('D', 500);
+        roman.put('C', 100);
+        roman.put('L', 50);
+        roman.put('X', 10);
+        roman.put('V', 5);
+        roman.put('I', 1);
         int result = 0;
-        for(int i = 0; i<s.length()-1; i++){
-            if(roman.get(s.charAt(i))<roman.get(s.charAt(i+1))){
+        for (int i = 0; i < s.length() - 1; i++) {
+            if (roman.get(s.charAt(i)) < roman.get(s.charAt(i + 1))) {
                 result -= roman.get(s.charAt(i));
             } else {
                 result += roman.get(s.charAt(i));
             }
         }
-        return result + roman.get(s.charAt(s.length()-1));
+        return result + roman.get(s.charAt(s.length() - 1));
+    }
+
+    public String longestCommonPrefix(String[] strs) {
+        if (strs == null || strs.length == 0)
+            return "";
+        return longestCommonPrefix(strs, 0, strs.length - 1);
+    }
+
+    private String longestCommonPrefix(String[] strs, int l, int r) {
+        if (l == r) {
+            return strs[l];
+        } else {
+            int mid = (l + r) / 2;
+            String lcpLeft = longestCommonPrefix(strs, l, mid);
+            String lcpRight = longestCommonPrefix(strs, mid + 1, r);
+            return commonPrefix(lcpLeft, lcpRight);
+        }
+    }
+
+    private String commonPrefix(String left, String right) {
+        int min = Math.min(left.length(), right.length());
+        for (int i = 0; i < min; i++) {
+            if (left.charAt(i) != right.charAt(i))
+                return left.substring(0, i);
+        }
+        return left.substring(0, min);
     }
 }
