@@ -445,4 +445,24 @@ public class Solution {
         return M[num/1000] + C[(num%1000)/100] + X[(num%100)/10] + I[num%10];
 
     }
+
+    public int romanToInt(String s) {
+        HashMap<Character, Integer> roman = new HashMap<>();
+        roman.put('M',1000);
+        roman.put('D',500);
+        roman.put('C',100);
+        roman.put('L',50);
+        roman.put('X',10);
+        roman.put('V',5);
+        roman.put('I',1);
+        int result = 0;
+        for(int i = 0; i<s.length()-1; i++){
+            if(roman.get(s.charAt(i))<roman.get(s.charAt(i+1))){
+                result -= roman.get(s.charAt(i));
+            } else {
+                result += roman.get(s.charAt(i));
+            }
+        }
+        return result + roman.get(s.charAt(s.length()-1));
+    }
 }
