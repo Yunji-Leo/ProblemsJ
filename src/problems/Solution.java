@@ -380,4 +380,60 @@ public class Solution {
         nodeQueue.add(new TreeNode(value));
         depthQueue.add(depth);
     }
+
+    public int maxProfit(int k, int[] prices) {
+        if (k == 0 || prices.length == 0)
+            return 0;
+
+        if (2*k>prices.length){
+            int result = 0;
+            for(int i = 0; i<prices.length-1; i++){
+                if(prices[i+1]>prices[i]){
+                    result += prices[i+1]-prices[i];
+                }
+            }
+            return result;
+        }
+
+        int[][][] dp = new int[prices.length+1][k+1][2];
+
+        dp[0][0][1] = Integer.MIN_VALUE;
+
+        for(int i = 1; i < prices.length+1; i++){
+            dp[i][0][1] = Math.max(dp[i-1][0][1], -prices[i-1]);
+        }
+
+        for(int i = 1; i <= k ; i++){
+            dp[0][i][1] = -prices[0];
+        }
+
+        for(int i = 1; i < prices.length+1; i++){
+            for(int j = 1; j<=k; j++){
+                dp[i][j][0] = Math.max(dp[i-1][j][0],dp[i-1][j-1][1]+prices[i-1]);
+                dp[i][j][1] = Math.max(dp[i-1][j][1],dp[i-1][j][0]-prices[i-1]);
+            }
+        }
+
+        return dp[prices.length][k][0];
+    }
+
+    public int maxArea(int[] height) {
+        int left = 0;
+        int right = height.length -1;
+        int result = 0;
+
+        while(left<right){
+            int minH = -1;
+            int wide = right - left;
+            if (height[left]<=height[right]){
+                minH = height[left];
+                left++;
+            }else {
+                minH = height[right];
+                right--;
+            }
+            result = Math.max(result, wide*minH);
+        }
+        return result;
+    }
 }
