@@ -1,5 +1,7 @@
 package problems;
 
+import jdk.internal.joptsimple.internal.Strings;
+
 import java.util.*;
 
 public class Solution {
@@ -533,9 +535,9 @@ public class Solution {
             int right = nums.length - 1;
             while (left < right) {
                 int sum = nums[i] + nums[left] + nums[right];
-                if(Math.abs(sum-target)<distance){
+                if (Math.abs(sum - target) < distance) {
                     result = sum;
-                    distance = Math.abs(sum-target);
+                    distance = Math.abs(sum - target);
                 }
                 if (sum == target)
                     return sum;
@@ -548,4 +550,40 @@ public class Solution {
         }
         return result;
     }
+
+    public List<String> letterCombinations(String digits) {
+        List<String> result = new ArrayList<>();
+
+        if(digits == null || digits.length()==0){
+            return result;
+        }
+
+        HashMap<Character, String[]> phone = new HashMap<>();
+        phone.put('2', new String[]{"a", "b", "c"});
+        phone.put('3', new String[]{"d", "e", "f"});
+        phone.put('4', new String[]{"g", "h", "i"});
+        phone.put('5', new String[]{"j", "k", "l"});
+        phone.put('6', new String[]{"m", "n", "o"});
+        phone.put('7', new String[]{"p", "q", "r", "s"});
+        phone.put('8', new String[]{"t", "u", "v"});
+        phone.put('9', new String[]{"w", "x", "y", "z"});
+
+        letterCombinationsRecursive(result, phone, digits, 0, "");
+        return result;
+    }
+
+    private void letterCombinationsRecursive(List<String> result, HashMap<Character, String[]> phone, String digits, int pos, String temp){
+        if(pos == digits.length()){
+            result.add(temp);
+            return;
+        }
+
+        for(String s : phone.get(digits.charAt(pos))){
+            temp += s;
+            letterCombinationsRecursive(result, phone, digits, pos+1, temp);
+            temp = temp.substring(0,temp.length()-1);
+        }
+    }
+
+
 }
