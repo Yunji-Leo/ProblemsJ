@@ -1,7 +1,5 @@
 package problems;
 
-import jdk.internal.joptsimple.internal.Strings;
-
 import java.util.*;
 
 public class Solution {
@@ -639,6 +637,45 @@ public class Solution {
             second = second.next;
         }
         second.next = second.next.next;
+        return dummy.next;
+    }
+
+    public boolean isValid(String s) {
+        Stack<Character> stack = new Stack<>();
+        for (Character c : s.toCharArray()) {
+            if (c == '(') {
+                stack.push(')');
+            } else if (c == '[') {
+                stack.push(']');
+            } else if (c == '{') {
+                stack.push('}');
+            } else if (stack.size() == 0 || c != stack.peek()) {
+                return false;
+            } else {
+                stack.pop();
+            }
+        }
+        return stack.size() == 0;
+    }
+
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+        ListNode dummy = new ListNode(0);
+        ListNode prev = dummy;
+        while (l1 != null && l2 != null) {
+            if (l1.val > l2.val) {
+                prev.next = l2;
+                l2 = l2.next;
+            } else {
+                prev.next = l1;
+                l1 = l1.next;
+            }
+            prev = prev.next;
+        }
+        if (l1 != null) {
+            prev.next = l1;
+        } else {
+            prev.next = l2;
+        }
         return dummy.next;
     }
 
