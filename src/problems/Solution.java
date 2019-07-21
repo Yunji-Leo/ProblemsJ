@@ -554,7 +554,7 @@ public class Solution {
     public List<String> letterCombinations(String digits) {
         List<String> result = new ArrayList<>();
 
-        if(digits == null || digits.length()==0){
+        if (digits == null || digits.length() == 0) {
             return result;
         }
 
@@ -572,18 +572,58 @@ public class Solution {
         return result;
     }
 
-    private void letterCombinationsRecursive(List<String> result, HashMap<Character, String[]> phone, String digits, int pos, String temp){
-        if(pos == digits.length()){
+    private void letterCombinationsRecursive(List<String> result, HashMap<Character, String[]> phone, String digits, int pos, String temp) {
+        if (pos == digits.length()) {
             result.add(temp);
             return;
         }
 
-        for(String s : phone.get(digits.charAt(pos))){
+        for (String s : phone.get(digits.charAt(pos))) {
             temp += s;
-            letterCombinationsRecursive(result, phone, digits, pos+1, temp);
-            temp = temp.substring(0,temp.length()-1);
+            letterCombinationsRecursive(result, phone, digits, pos + 1, temp);
+            temp = temp.substring(0, temp.length() - 1);
         }
     }
 
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+        List<List<Integer>> result = new ArrayList<>();
+        Arrays.sort(nums);
+        for (int i = 0; i < nums.length - 3; i++) {
+            if (i == 0 || nums[i] != nums[i - 1]) {
+                for (int j = i + 1; j < nums.length - 2; j++) {
+                    if (j == i + 1 || nums[j] != nums[j - 1]) {
+                        int left = j + 1;
+                        int right = nums.length - 1;
+                        while (left < right) {
+                            int sum = nums[i] + nums[j] + nums[left] + nums[right];
+                            if (sum == target) {
+                                List<Integer> ans = new ArrayList<>();
+                                ans.add(nums[i]);
+                                ans.add(nums[j]);
+                                ans.add(nums[left]);
+                                ans.add(nums[right]);
+                                result.add(ans);
+
+                                while (left < right && nums[left] == nums[left + 1]) {
+                                    left++;
+                                }
+                                while (left < right && nums[right] == nums[right - 1]) {
+                                    right--;
+                                }
+                                left++;
+                                right--;
+                            } else if (sum > target){
+                                right--;
+                            } else {
+                                left++;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
 
 }
