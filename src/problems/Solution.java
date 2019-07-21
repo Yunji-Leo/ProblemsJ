@@ -679,4 +679,23 @@ public class Solution {
         return dummy.next;
     }
 
+    public List<String> generateParenthesis(int n) {
+        List<String> result = new ArrayList<>();
+        generateParenthesisRecursive(result, "", 0, 0, n);
+        return result;
+    }
+
+    private void generateParenthesisRecursive(List<String> result, String temp, int left, int right, int n) {
+        if (temp.length() == 2 * n) {
+            result.add(temp);
+            return;
+        }
+        if (left < n) {
+            generateParenthesisRecursive(result, temp + "(", left + 1, right, n);
+        }
+        if (right < left) {
+            generateParenthesisRecursive(result, temp + ")", left, right + 1, n);
+        }
+    }
+
 }
