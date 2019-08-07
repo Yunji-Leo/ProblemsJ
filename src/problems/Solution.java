@@ -750,4 +750,29 @@ public class Solution {
         return dummy.next;
     }
 
+    public ListNode reverseKGroup(ListNode head, int k) {
+        Stack<ListNode> stack = new Stack<>();
+        ListNode dummy = new ListNode(0);
+        ListNode prev = dummy;
+        prev.next = head;
+        outerloop:
+        while (prev.next!=null){
+            ListNode cur = prev.next;
+            for(int i = 0; i<k;i++){
+                stack.push(cur);
+                cur = cur.next;
+                if (cur == null && i<k-1){
+                    break outerloop;
+                }
+            }
+            while (stack.size()>0){
+                ListNode rev = stack.pop();
+                prev.next = rev;
+                prev = rev;
+            }
+            prev.next = cur;
+        }
+        return dummy.next;
+    }
+
 }
