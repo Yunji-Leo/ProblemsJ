@@ -824,4 +824,32 @@ public class Solution {
         curr.right = tmpRight;
     }
 
+    public void flatten3(TreeNode root){
+        if (root == null){
+            return;
+        }
+
+        Queue<TreeNode> queue = new LinkedList<>();
+        Stack<TreeNode> stack = new Stack<>();
+        stack.push(root);
+
+        while(stack.size()>0){
+            TreeNode curr = stack.pop();
+            if (curr.right!=null){
+                stack.push(curr.right);
+            }
+            if (curr.left!=null){
+                stack.push(curr.left);
+            }
+            curr.left = null;
+            queue.add(curr);
+        }
+
+        TreeNode curr = queue.poll();
+        while (queue.size()>0){
+            curr.right = queue.poll();
+            curr = curr.right;
+        }
+    }
+
 }
