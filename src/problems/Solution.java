@@ -739,7 +739,7 @@ public class Solution {
         ListNode dummy = new ListNode(0);
         ListNode prev = dummy;
         prev.next = head;
-        while (prev.next!=null&&prev.next.next!=null){
+        while (prev.next != null && prev.next.next != null) {
             ListNode first = prev.next;
             ListNode second = prev.next.next;
             prev.next = second;
@@ -756,16 +756,16 @@ public class Solution {
         ListNode prev = dummy;
         prev.next = head;
         outerloop:
-        while (prev.next!=null){
+        while (prev.next != null) {
             ListNode cur = prev.next;
-            for(int i = 0; i<k;i++){
+            for (int i = 0; i < k; i++) {
                 stack.push(cur);
                 cur = cur.next;
-                if (cur == null && i<k-1){
+                if (cur == null && i < k - 1) {
                     break outerloop;
                 }
             }
-            while (stack.size()>0){
+            while (stack.size() > 0) {
                 ListNode rev = stack.pop();
                 prev.next = rev;
                 prev = rev;
@@ -773,6 +773,55 @@ public class Solution {
             prev.next = cur;
         }
         return dummy.next;
+    }
+
+    public void flatten(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        TreeNode tmpRight = null;
+        if (root.right != null) {
+            flatten(root.right);
+            tmpRight = root.right;
+            root.right = null;
+        }
+        if (root.left != null) {
+            flatten(root.left);
+            root.right = root.left;
+            root.left = null;
+        }
+        TreeNode curr = root;
+        while (curr.right != null) {
+            curr = curr.right;
+        }
+        curr.right = tmpRight;
+    }
+
+
+    public void flatten2(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        TreeNode tmpRight = null;
+        if (root.left != null) {
+            flatten2(root.left);
+            tmpRight = root.right;
+            root.right = root.left;
+            root.left = null;
+        } else {
+            tmpRight = root.right;
+            root.right = null;
+        }
+
+        if (tmpRight != null) {
+            flatten2(tmpRight);
+        }
+
+        TreeNode curr = root;
+        while (curr.right != null) {
+            curr = curr.right;
+        }
+        curr.right = tmpRight;
     }
 
 }
