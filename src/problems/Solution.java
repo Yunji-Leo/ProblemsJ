@@ -824,8 +824,8 @@ public class Solution {
         curr.right = tmpRight;
     }
 
-    public void flatten3(TreeNode root){
-        if (root == null){
+    public void flatten3(TreeNode root) {
+        if (root == null) {
             return;
         }
 
@@ -833,12 +833,12 @@ public class Solution {
         Stack<TreeNode> stack = new Stack<>();
         stack.push(root);
 
-        while(stack.size()>0){
+        while (stack.size() > 0) {
             TreeNode curr = stack.pop();
-            if (curr.right!=null){
+            if (curr.right != null) {
                 stack.push(curr.right);
             }
-            if (curr.left!=null){
+            if (curr.left != null) {
                 stack.push(curr.left);
             }
             curr.left = null;
@@ -846,10 +846,47 @@ public class Solution {
         }
 
         TreeNode curr = queue.poll();
-        while (queue.size()>0){
+        while (queue.size() > 0) {
             curr.right = queue.poll();
             curr = curr.right;
         }
+    }
+
+    public List<Integer> findSubstring(String s, String[] words) {
+        List<Integer> result = new ArrayList<>();
+        if (words.length == 0) {
+            return result;
+        }
+
+        int wordLength = words[0].length();
+        HashMap<String, Integer> map = new HashMap<>();
+        for (String w : words) {
+            map.put(w, map.containsKey(w) ? map.get(w) + 1 : 1);
+        }
+
+        for (int i = 0; i < s.length(); i++) {
+            HashMap<String, Integer> copymap = new HashMap<>(map);
+            boolean found = true;
+            for (int j = 1; j <= words.length; j++) {
+                int end = j * wordLength + i;
+                int start = end - wordLength;
+                if (end <= s.length()) {
+                    String sub = s.substring(start, end);
+                    if (copymap.containsKey(sub) && copymap.get(sub) > 0) {
+                        copymap.put(sub, copymap.get(sub) - 1);
+                    } else {
+                        found = false;
+                        break;
+                    }
+                } else {
+                    return result;
+                }
+            }
+            if (found) {
+                result.add(i);
+            }
+        }
+        return result;
     }
 
 }
