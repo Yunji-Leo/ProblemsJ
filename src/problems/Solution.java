@@ -889,4 +889,44 @@ public class Solution {
         return result;
     }
 
+    public void nextPermutation(int[] nums) {
+        if (nums.length < 2) {
+            return;
+        }
+        int i = nums.length - 2;
+        for (; i >= 0; i--) {
+            if (nums[i] < nums[i + 1]) {
+                break;
+            }
+        }
+        if (i == -1) {
+            reverse(nums, 0, nums.length - 1);
+            return;
+        }
+
+        int j = i;
+        for (; j < nums.length; j++) {
+            if (j == nums.length - 1 || ( nums[j + 1] <= nums[i])) {  //notice <=
+                break;
+            }
+        }
+        swap(nums, i, j);
+        reverse(nums, i + 1, nums.length - 1);
+
+    }
+
+    private void swap(int[] nums, int i, int j) {
+        int tmp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = tmp;
+    }
+
+    private void reverse(int[] nums, int i, int j) {
+        while (i < j) {
+            swap(nums, i, j);
+            i++;
+            j--;
+        }
+    }
+
 }
