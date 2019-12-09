@@ -31,4 +31,9 @@ public class SolutionTest {
         Collections.reverse(Arrays.asList(nums));
         System.out.println(Arrays.asList(nums));
     }
+
+    @org.junit.Test
+    public void testHanoi(){
+        s.hanoi(3);
+    }
 }

@@ -1090,4 +1090,17 @@ public class Solution {
             }
         }
     }
+
+    public void hanoi(int n){
+        hanoiRecursive(n, 'A', 'B', 'C');
+    }
+
+    private void hanoiRecursive(int n, char A, char B, char C){
+        if (n == 0){
+            return;
+        }
+        hanoiRecursive(n-1, A, C, B);
+        System.out.println(A+"->"+C);
+        hanoiRecursive(n-1, B, A, C);
+    }
 }
