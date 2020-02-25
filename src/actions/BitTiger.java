@@ -1,5 +1,7 @@
 package actions;
 
+import actions.util.ListNode;
+
 import java.util.HashMap;
 
 public class BitTiger {
@@ -13,5 +15,28 @@ public class BitTiger {
             map.put(target - nums[i], i);
         }
         return ans;
+    }
+
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode dummy = new ListNode(0);
+        ListNode prev = dummy;
+        int carry = 0;
+        while (l1 != null && l2 != null) {
+            int value = l1.val + l2.val + carry;
+            carry = value / 10; //BUG: / and %
+            value = value % 10;
+            ListNode newNode = new ListNode(value);
+            prev.next = newNode;
+            prev = newNode;
+            l1 = l1.next;
+            l2 = l2.next;
+        }
+        if (l1 != null) {
+            prev.next = l1;
+        } else {
+            prev.next = l2;
+        }
+        return dummy.next;
+
     }
 }
