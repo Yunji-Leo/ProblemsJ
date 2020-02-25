@@ -293,4 +293,21 @@ public class BitTiger {
         generateParenthesisBacktrack(results, left + 1, right, n, temp + "(");
         generateParenthesisBacktrack(results, left, right + 1, n, temp + ")");
     }
+
+    public ListNode mergeKLists(ListNode[] lists) {
+        if (lists == null || lists.length == 0) {
+            return null;
+        }
+        return mergeKListsDC(lists, 0, lists.length - 1);
+    }
+
+    private ListNode mergeKListsDC(ListNode[] lists, int left, int right) {
+        if (left == right) {
+            return lists[left];
+        }
+        int mid = (left + right) / 2;
+        ListNode leftList = mergeKListsDC(lists, left, mid);
+        ListNode rightList = mergeKListsDC(lists, mid + 1, right);
+        return mergeTwoLists(leftList, rightList);
+    }
 }
