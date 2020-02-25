@@ -2,9 +2,7 @@ package actions;
 
 import actions.util.ListNode;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 
 public class BitTiger {
     public int[] twoSum(int[] nums, int target) {
@@ -166,5 +164,40 @@ public class BitTiger {
             }
         }
         return strs[0];
+    }
+
+    public List<List<Integer>> threeSum(int[] nums) {
+        List<List<Integer>> results = new ArrayList<>();
+        if (nums.length < 3) {
+            return results;
+        }
+        Arrays.sort(nums);
+        for (int i = 0; i < nums.length - 2; i++) {
+            if (i == 0 || nums[i] != nums[i - 1]) {
+                int left = i + 1;
+                int right = nums.length - 1;
+                while (left < right) {
+                    int sum = nums[i] + nums[left] + nums[right];
+                    if (left != i + 1 && nums[left] == nums[left - 1]) {
+                        left++;
+                    } else if (right != nums.length - 1 && nums[right] == nums[right + 1]) {
+                        right--;
+                    } else if (sum < 0) {
+                        left++;
+                    } else if (sum > 0) {
+                        right--;
+                    } else {
+                        List<Integer> res = new ArrayList<>();
+                        res.add(nums[i]);
+                        res.add(nums[left]);
+                        res.add(nums[right]);
+                        results.add(res);
+                        left++;
+                        right--;
+                    }
+                }
+            }
+        }
+        return results;
     }
 }
