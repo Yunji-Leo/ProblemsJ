@@ -274,4 +274,23 @@ public class BitTiger {
         }
         return dummy.next;
     }
+
+    public List<String> generateParenthesis(int n) {
+        List<String> results = new ArrayList<>();
+        generateParenthesisBacktrack(results, n, n, n, "");
+        return results;
+    }
+
+    private void generateParenthesisBacktrack(List<String> results, int left, int right, int n, String temp) {
+        if (left == n && right == n) {
+            results.add(temp);
+            return;
+        }
+
+        if (right > left || left > n) {
+            return;
+        }
+        generateParenthesisBacktrack(results, left + 1, right, n, temp + "(");
+        generateParenthesisBacktrack(results, left, right + 1, n, temp + ")");
+    }
 }
