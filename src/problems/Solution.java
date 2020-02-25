@@ -4,6 +4,8 @@ import java.util.*;
 
 public class Solution {
 
+    Result[][] memo;
+
     public int[] twoSum(int[] nums, int target) {
         int[] ans = new int[2];
         HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
@@ -80,7 +82,7 @@ public class Solution {
             return (double) (getkth(nums1, nums2, (m + n) / 2 + 1) + getkth(nums1, nums2, (m + n) / 2))
                     * 0.5;
         } else {
-            return (double) (getkth(nums1, nums2, (m + n) / 2 + 1)) * 1.0;
+            return (double) (getkth(nums1, nums2, (m + n) / 2 + 1)) * 1.0; // BUG: (m+n)/2 + 1
         }
     }
 
@@ -275,13 +277,6 @@ public class Solution {
             return first_match && isMatch(s.substring(1), p.substring(1));
         }
     }
-
-    enum Result {
-        TRUE,
-        FALSE
-    }
-
-    Result[][] memo;
 
     public boolean isMatch2(String text, String pattern) {
         memo = new Result[text.length() + 1][pattern.length() + 1];
@@ -797,7 +792,6 @@ public class Solution {
         curr.right = tmpRight;
     }
 
-
     public void flatten2(TreeNode root) {
         if (root == null) {
             return;
@@ -1091,16 +1085,21 @@ public class Solution {
         }
     }
 
-    public void hanoi(int n){
+    public void hanoi(int n) {
         hanoiRecursive(n, 'A', 'B', 'C');
     }
 
-    private void hanoiRecursive(int n, char A, char B, char C){
-        if (n == 0){
+    private void hanoiRecursive(int n, char A, char B, char C) {
+        if (n == 0) {
             return;
         }
-        hanoiRecursive(n-1, A, C, B);
-        System.out.println(A+"->"+C);
-        hanoiRecursive(n-1, B, A, C);
+        hanoiRecursive(n - 1, A, C, B);
+        System.out.println(A + "->" + C);
+        hanoiRecursive(n - 1, B, A, C);
+    }
+
+    enum Result {
+        TRUE,
+        FALSE
     }
 }
