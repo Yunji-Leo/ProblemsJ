@@ -200,4 +200,38 @@ public class BitTiger {
         }
         return results;
     }
+
+    public List<String> letterCombinations(String digits) {
+        List<String> result = new ArrayList<>();
+
+        if (digits == null || digits.length() == 0) {
+            return result;
+        }
+
+        HashMap<Character, String[]> phone = new HashMap<>();
+        phone.put('2', new String[]{"a", "b", "c"});
+        phone.put('3', new String[]{"d", "e", "f"});
+        phone.put('4', new String[]{"g", "h", "i"});
+        phone.put('5', new String[]{"j", "k", "l"});
+        phone.put('6', new String[]{"m", "n", "o"});
+        phone.put('7', new String[]{"p", "q", "r", "s"});
+        phone.put('8', new String[]{"t", "u", "v"});
+        phone.put('9', new String[]{"w", "x", "y", "z"});
+
+        letterCombinationsBacktrack(result, phone, digits, 0, "");
+        return result;
+    }
+
+    private void letterCombinationsBacktrack(List<String> result, HashMap<Character, String[]> phone, String digits, int pos, String tmp) {
+        if (pos == digits.length()) {
+            result.add(tmp);
+            return;
+        }
+
+        for (String s : phone.get(digits.charAt(pos))) {
+            tmp += s;
+            letterCombinationsBacktrack(result, phone, digits, pos + 1, tmp);
+            tmp = tmp.substring(0, tmp.length() - 1);
+        }
+    }
 }
