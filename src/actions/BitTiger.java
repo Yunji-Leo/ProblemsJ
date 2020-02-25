@@ -102,4 +102,53 @@ public class BitTiger {
             return getKth(A, Arrays.copyOfRange(B, pb, n), pa);
         }
     }
+
+    public String longestPalindrome(String s) {
+        if (s == null || s.length() == 0) {
+            return "";
+        }
+
+        int start = 0;
+        int end = 0;
+
+        for (int i = 0; i < s.length(); i++) {
+            int len1 = expandAtCenter(s, i, i);
+            int len2 = expandAtCenter(s, i, i + 1);
+            int len = Math.max(len1, len2);
+            if (len > end - start + 1) {
+                start = i - (len - 1) / 2;
+                end = i + len / 2;
+            }
+
+        }
+        return s.substring(start, end + 1);
+    }
+
+    private int expandAtCenter(String s, int left, int right) {
+        while (left >= 0 && right < s.length()) {
+            if (s.charAt(left) == s.charAt(right)) {
+                left--;
+                right++;
+            } else {
+                break;
+            }
+        }
+        return right - left - 1;
+    }
+
+    public int maxArea(int[] height) {
+        int left = 0;
+        int right = height.length - 1;
+        int result = 0;
+        while (left < right) {
+            if (height[left] <= height[right]) {
+                result = Math.max(result, height[left] * (right - left));
+                left++;
+            } else {
+                result = Math.max(result, height[right] * (right - left));
+                right--;
+            }
+        }
+        return result;
+    }
 }
