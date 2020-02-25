@@ -234,4 +234,22 @@ public class BitTiger {
             tmp = tmp.substring(0, tmp.length() - 1);
         }
     }
+
+    public boolean isValid(String s) {
+        Stack<Character> stack = new Stack<>();
+        for (Character c : s.toCharArray()) {
+            if (c == '(') {
+                stack.push(')');
+            } else if (c == '[') {
+                stack.push(']');
+            } else if (c == '{') {
+                stack.push('}');
+            } else if (stack.empty() || c != stack.peek()) {
+                return false;
+            } else {
+                stack.pop();
+            }
+        }
+        return stack.empty();
+    }
 }
