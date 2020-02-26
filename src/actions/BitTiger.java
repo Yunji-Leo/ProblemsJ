@@ -408,6 +408,29 @@ public class BitTiger {
         return s;
     }
 
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> results = new ArrayList<>();
+        Arrays.sort(candidates);
+        combinationSumBacktrack(candidates, 0, results, new ArrayList<>(), 0, target);
+        return results;
+    }
+
+    private void combinationSumBacktrack(int[] candidates, int index, List<List<Integer>> results, List<Integer> temp, int sum, int target) {
+        if (sum == target) {
+            results.add(new ArrayList<>(temp));
+            return;
+        }
+
+        for (int i = index; i < candidates.length; i++) {
+            if (sum + candidates[i] > target) {
+                return;
+            }
+            temp.add(candidates[i]);
+            combinationSumBacktrack(candidates, i, results, temp, sum + candidates[i], target);
+            temp.remove(temp.size() - 1);
+        }
+    }
+
     public int minDistance(String word1, String word2) {
         if (word1 == null && word2 == null) {
             return 0;
