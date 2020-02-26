@@ -5,5 +5,6 @@ public class BitTigerTest {
 
     @org.junit.Test
     public void testMethod() {
+        test.search(new int[]{3, 1}, 3);
     }
 }

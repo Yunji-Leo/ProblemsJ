@@ -5,6 +5,7 @@ import actions.util.ListNode;
 import java.util.*;
 
 public class BitTiger {
+
     public int[] twoSum(int[] nums, int target) {
         int[] ans = new int[2];
         HashMap<Integer, Integer> map = new HashMap<>();
@@ -353,6 +354,38 @@ public class BitTiger {
             left++;
             right--;
         }
+    }
+
+    public int search(int[] nums, int target) {
+        if (nums == null || nums.length == 0) {
+            return -1;
+        }
+        if (nums.length == 1) {
+            return nums[0] == target ? 0 : -1;
+        }
+        int k = 0;
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] < nums[i - 1]) {
+                k = i;
+            }
+        }
+        int left = k;
+        int right = k + nums.length - 1;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            int realMid = mid;
+            if (mid >= nums.length) {
+                realMid = mid - nums.length; //+ 1;
+            }
+            if (nums[realMid] == target) {
+                return realMid;
+            } else if (nums[realMid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        return -1;
     }
 
     public int minDistance(String word1, String word2) {
