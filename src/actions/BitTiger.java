@@ -388,6 +388,26 @@ public class BitTiger {
         return -1;
     }
 
+    public String countAndSay(int n) {
+        String s = "1";
+        while (n > 1) {
+            int num = 0;
+            StringBuilder ans = new StringBuilder();
+            for (int i = 0; i < s.length(); i++) {
+                if (i == 0 || s.charAt(i) == s.charAt(i - 1)) {
+                    num++;
+                } else {
+                    ans.append(num).append(s.charAt(i - 1));
+                    num = 1;
+                }
+            }
+            ans.append(num).append(s.charAt(s.length() - 1));
+            s = ans.toString();
+            n--;
+        }
+        return s;
+    }
+
     public int minDistance(String word1, String word2) {
         if (word1 == null && word2 == null) {
             return 0;
