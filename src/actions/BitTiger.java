@@ -315,6 +315,19 @@ public class BitTiger {
         return 0;
     }
 
+    private long divideRecursive(long dividend, long divisor) {
+        if (dividend < divisor) {
+            return 0;
+        }
+        long sum = divisor;
+        long multiplier = 1;
+        while (sum <= dividend) {
+            sum += sum;
+            multiplier += multiplier;
+        }
+        return multiplier / 2 + divideRecursive(dividend - sum / 2, divisor);
+    }
+
     public int minDistance(String word1, String word2) {
         if (word1 == null && word2 == null) {
             return 0;
