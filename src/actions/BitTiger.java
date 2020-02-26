@@ -475,7 +475,7 @@ public class BitTiger {
 
         StringBuilder sb = new StringBuilder();
         for (int p : pos) {
-            if (!(sb.length() == 0) && p == 0) {
+            if (!(sb.length() == 0 && p == 0)) {
                 sb.append(p);
             }
         }
