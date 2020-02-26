@@ -328,6 +328,33 @@ public class BitTiger {
         return multiplier / 2 + divideRecursive(dividend - sum / 2, divisor);
     }
 
+    public void nextPermutation(int[] nums) {
+        int i = nums.length - 2;
+        while (i >= 0 && nums[i] >= nums[i + 1]) {
+            i--;
+        }
+        if (i >= 0) {
+            int j = nums.length - 1;
+            while (j >= 0 && nums[j] <= nums[i]) {
+                j--;
+            }
+            int tmp = nums[i];
+            nums[i] = nums[j];
+            nums[j] = tmp;
+        }
+        reverse(nums, i + 1, nums.length - 1);
+    }
+
+    private void reverse(int[] nums, int left, int right) {
+        while (left < right) {
+            int tmp = nums[left];
+            nums[left] = nums[right];
+            nums[right] = tmp;
+            left++;
+            right--;
+        }
+    }
+
     public int minDistance(String word1, String word2) {
         if (word1 == null && word2 == null) {
             return 0;
