@@ -575,6 +575,49 @@ public class BitTiger {
         }
     }
 
+    public int uniquePathsTopDown(int m, int n) {
+        if (m == 0 || n == 0) {
+            return 1;
+        }
+        int[][] dp = new int[m][n];
+        return uniquePathsTopDownBacktrack(dp, m, n, 0, 0);
+    }
+
+    private int uniquePathsTopDownBacktrack(int[][] dp, int m, int n, int r, int c) {
+        if (r == m - 1 && c == n - 1) {
+            return 1;
+        }
+        if (r == m || c == n) {
+            return 0;
+        }
+        if (dp[r][c] != 0) {
+            return dp[r][c];
+        }
+        dp[r][c] = uniquePathsTopDownBacktrack(dp, m, n, r + 1, c) + uniquePathsTopDownBacktrack(dp, m, n, r, c + 1);
+        return dp[r][c];
+    }
+
+    public int uniquePathsBottomUp(int m, int n) {
+        if (m == 0 || n == 0) {
+            return 1;
+        }
+        int[][] dp = new int[m][n];
+        for (int i = 0; i < m; i++) {
+            dp[i][n - 1] = 1;
+        }
+        for (int j = 0; j < n; j++) {
+            dp[m - 1][j] = 1;
+        }
+
+        for (int i = m - 2; i >= 0; i--) {
+            for (int j = n - 2; j >= 0; j--) {
+                dp[i][j] = dp[i + 1][j] + dp[i][j + 1];
+            }
+        }
+
+        return dp[0][0];
+    }
+
     public int minDistance(String word1, String word2) {
         if (word1 == null && word2 == null) {
             return 0;
