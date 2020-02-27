@@ -483,6 +483,20 @@ public class BitTiger {
         return sb.length() == 0 ? "0" : sb.toString();
     }
 
+    public List<List<String>> groupAnagrams(String[] strs) {
+        HashMap<String, List<String>> map = new HashMap<>();
+        for (String s : strs) {
+            char[] ca = s.toCharArray();
+            Arrays.sort(ca);
+            String key = String.valueOf(ca);
+            if (!map.containsKey(key)) {
+                map.put(key, new ArrayList<>());
+            }
+            map.get(key).add(s);
+        }
+        return new ArrayList<>(map.values());
+    }
+
     public int minDistance(String word1, String word2) {
         if (word1 == null && word2 == null) {
             return 0;
