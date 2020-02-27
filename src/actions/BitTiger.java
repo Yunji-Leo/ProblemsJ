@@ -537,6 +537,23 @@ public class BitTiger {
         return ans;
     }
 
+    public boolean canJump(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return false;
+        }
+        int furthest = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (i > furthest) {
+                return false;
+            }
+            furthest = Math.max(furthest, i + nums[i]);
+            if (furthest >= nums.length - 1) {
+                return true;
+            }
+        }
+        return true;
+    }
+
     public int minDistance(String word1, String word2) {
         if (word1 == null && word2 == null) {
             return 0;
