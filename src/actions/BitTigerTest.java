@@ -5,6 +5,7 @@ public class BitTigerTest {
 
     @org.junit.Test
     public void testMethod() {
+        test.minWindow("ADOBECODEBANC", "ABC");
         test.search(new int[]{3, 1}, 3);
     }
 }

@@ -449,7 +449,6 @@ public class BitTiger {
         }
 
         return nums.length + 1;
-        return 1;
     }
 
     private void swap(int[] nums, int left, int right) {
@@ -616,6 +615,105 @@ public class BitTiger {
         }
 
         return dp[0][0];
+    }
+
+    public int climbStairs(int n) {
+        if (n == 0) {
+            return 1;
+        }
+        int[] dp = new int[n];
+        return climbStairsBacktrack(dp, n, 0);
+    }
+
+    private int climbStairsBacktrack(int[] dp, int n, int cur) {
+        if (cur == n) {
+            return 1;
+        }
+        if (cur > n) {
+            return 0;
+        }
+        if (dp[cur] != 0) {
+            return dp[cur];
+        }
+        dp[cur] = climbStairsBacktrack(dp, n, cur + 1) + climbStairsBacktrack(dp, n, cur + 2);
+        return dp[cur];
+    }
+
+    public int climbStairsBottomUp(int n) {
+        if (n == 0 || n == 1) {
+            return 1;
+        }
+        int[] dp = new int[n + 1];
+        dp[n] = 1;
+        dp[n - 1] = 1;
+        for (int i = n - 2; i >= 0; i--) {
+            dp[i] = dp[i + 1] + dp[i + 2];
+        }
+        return dp[0];
+    }
+
+    public String minWindow(String s, String t) {
+        if (s == null || s.length() == 0 || t == null || t.length() == 0) {
+            return "";
+        }
+        HashMap<Character, Integer> map = new HashMap<>();
+        for (char c : t.toCharArray()) {
+            map.put(c, 0);
+        }
+        int count = 0, fast = 0, slow = 0;
+        for (fast = 0; fast < s.length(); fast++) {
+            char key = s.charAt(fast);
+            if (map.containsKey(key)) {
+                int value = map.get(key);
+                if (value == 0) {
+                    count++;
+                }
+                map.put(key, value + 1);
+                if (count == t.length()) {
+                    break;
+                }
+            }
+        }
+        if (count < t.length()) {
+            return "";
+        }
+
+        int resFast = fast, resSlow = 0, resLen = fast;
+        boolean shrink = true;
+        while (fast < s.length()) {
+            if (shrink) {
+                char key = s.charAt(slow);
+                if (map.containsKey(key)) {
+                    int value = map.get(key);
+                    value--;
+                    if (value == 0) {
+                        shrink = false;
+                        if (fast - slow < resLen) {
+                            resLen = fast - slow;
+                            resFast = fast;
+                            resSlow = slow;
+                        }
+                    }
+                    map.put(key, value);
+                }
+                slow++;
+            } else {
+                fast++;
+                if (fast < s.length()) {
+                    char key = s.charAt(fast);
+                    if (map.containsKey(key)) {
+                        int value = map.get(key);
+                        value++;
+                        map.put(key, value);
+                        if (value == 1) {
+                            shrink = true;
+                        }
+                    }
+                }
+            }
+        }
+        return s.substring(resSlow, resFast + 1);
+
     }
 
     public int minDistance(String word1, String word2) {
