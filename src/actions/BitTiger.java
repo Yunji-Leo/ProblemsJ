@@ -914,4 +914,70 @@ public class BitTiger {
         }
         return result;
     }
+
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        int i1 = m - 1;
+        int i2 = n - 1;
+        int p = m + n - 1;
+        while (i1 >= 0 || i2 >= 0) {
+            if (i1 < 0) {
+                nums1[p] = nums2[i2];
+                i2--;
+            } else if (i2 < 0) {
+                nums1[p] = nums1[i1];
+                i1--;
+            } else {
+                if (nums1[i1] >= nums2[i2]) {
+                    nums1[p] = nums1[i1];
+                    i1--;
+                } else {
+                    nums1[p] = nums2[i2];
+                    i2--;
+                }
+            }
+            p--;
+        }
+    }
+
+    public int numDecodings(String s) {
+        if (s == null || s.length() == 0) {
+            return 0;
+        }
+
+        HashSet<Character> set = new HashSet<>(Arrays.asList(new Character[]{'7', '8', '9'}));
+        int[] dp = new int[s.length()];
+        for (int i = 0; i < s.length(); i++) {
+            dp[i] = -1;
+        }
+        return numDecodingsTopdown(s, 0, dp, set);
+    }
+
+    private int numDecodingsTopdown(String s, int index, int[] dp, HashSet<Character> set) {
+        if (index < s.length() && s.charAt(index) == '0') {
+            return 0;
+        }
+        if (index < s.length() - 1) {
+            if (s.charAt(index) != '1' && s.charAt(index) != '2' && s.charAt(index + 1) == '0') {
+                return 0;
+            }
+        }
+        if (index >= s.length() - 1) {
+            return 1;
+        }
+
+        if (dp[index] != -1) {
+            return dp[index];
+        }
+
+        if (index < s.length()) {
+            if (s.charAt(index + 1) == '0') {
+                dp[index] = numDecodingsTopdown(s, index + 2, dp, set);
+            } else if (s.charAt(index) == '1' || (s.charAt(index) == '2' && !set.contains(s.charAt(index + 1)))) {
+                dp[index] = numDecodingsTopdown(s, index + 1, dp, set) + numDecodingsTopdown(s, index + 2, dp, set);
+            } else {
+                dp[index] = numDecodingsTopdown(s, index + 1, dp, set);
+            }
+        }
+        return dp[index];
+    }
 }
