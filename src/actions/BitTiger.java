@@ -1154,5 +1154,35 @@ public class BitTiger {
         return result;
     }
 
+    public int maxPathSum(TreeNode root) {
+        maxPathSumSingle(root);
+        return maxPathSumResult;
+    }
+
+    private int maxPathSumResult = Integer.MIN_VALUE;
+
+    private int maxPathSumSingle(TreeNode node) {
+        if (node == null) {
+            return 0;
+        }
+
+        int leftMax = maxPathSumSingle(node.left);
+        int rightMax = maxPathSumSingle(node.right);
+
+        int curSum = node.val;
+        int pathResult = node.val;
+        if (leftMax > 0) {
+            curSum += leftMax;
+            pathResult += leftMax;
+        }
+        if (rightMax > 0) {
+            curSum += rightMax;
+            pathResult = Math.max(pathResult, node.val + rightMax);
+        }
+        maxPathSumResult = Math.max(maxPathSumResult, curSum);
+
+        return pathResult;
+    }
+
 
 }
