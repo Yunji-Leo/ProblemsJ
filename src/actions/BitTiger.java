@@ -1108,5 +1108,26 @@ public class BitTiger {
         return node;
     }
 
+    public void flatten(TreeNode root) {
+        flattenRecur(root);
+    }
+
+    private TreeNode flattenRecur(TreeNode node) {
+        if (node == null) {
+            return null;
+        }
+
+        TreeNode leftNode = node.left;
+        TreeNode rightNode = node.right;
+        node.right = flattenRecur(leftNode);
+        TreeNode cur = node;
+        while (cur.right != null) {
+            cur = cur.right;
+        }
+        cur.right = flattenRecur(rightNode);
+        node.left = null;
+        return node;
+    }
+
 
 }
