@@ -1,6 +1,7 @@
 package actions;
 
 import actions.util.ListNode;
+import actions.util.Node;
 import actions.util.TreeNode;
 
 import java.util.*;
@@ -1204,6 +1205,29 @@ public class BitTiger {
         }
 
         return result;
+    }
+
+    public Node cloneGraph(Node node) {
+        if (node == null) {
+            return null;
+        }
+        HashMap<Node, Node> map = new HashMap<>();
+        return cloneGraphRecur(node, map);
+    }
+
+    private Node cloneGraphRecur(Node node, HashMap<Node, Node> map) {
+        if (map.containsKey(node)) {
+            return map.get(node);
+        }
+
+        Node cloneNode = new Node(node.val);
+        map.put(node, cloneNode);
+
+        for (Node neighbor : node.neighbors) {
+            Node cloneNeighbor = cloneGraphRecur(neighbor, map);
+            cloneNode.neighbors.add(cloneNeighbor);
+        }
+        return cloneNode;
     }
 
 
