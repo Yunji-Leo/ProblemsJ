@@ -1,6 +1,7 @@
 package actions;
 
 import actions.util.ListNode;
+import actions.util.TreeNode;
 
 import java.util.*;
 
@@ -979,5 +980,51 @@ public class BitTiger {
             }
         }
         return dp[index];
+    }
+
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> result = new ArrayList<>();
+        inorderTraversalRecur(root, result);
+        return result;
+    }
+
+    private void inorderTraversalRecur(TreeNode node, List<Integer> result) {
+        if (node == null) {
+            return;
+        }
+
+        inorderTraversalRecur(node.left, result);
+        result.add(node.val);
+        inorderTraversalRecur(node.right, result);
+    }
+
+    public List<Integer> inorderTraversalIter(TreeNode root) {
+        List<Integer> result = new LinkedList<>();
+        if (root == null) {
+            return result;
+        }
+
+        Stack<TreeNode> stack = new Stack<>();
+        HashSet<TreeNode> visited = new HashSet<>();
+
+        stack.push(root);
+
+        while (!stack.empty()) {
+            TreeNode node = stack.pop();
+            if (visited.contains(node)) {
+                result.add(node.val);
+                continue;
+            }
+            visited.add(node);
+            if (node.right != null) {
+                stack.push(node.right);
+            }
+            stack.push(node);
+            if (node.left != null) {
+                stack.push(node.left);
+            }
+        }
+
+        return result;
     }
 }
