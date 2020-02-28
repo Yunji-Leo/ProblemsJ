@@ -1184,5 +1184,27 @@ public class BitTiger {
         return pathResult;
     }
 
+    public int longestConsecutive(int[] nums) {
+        HashSet<Integer> set = new HashSet<>();
+        for (int n : nums) {
+            set.add(n);
+        }
+
+        int result = 0;
+        for (int n : nums) {
+            if (set.contains(n - 1)) {
+                continue;
+            }
+            int count = 0;
+            while (set.contains(n)) {
+                count++;
+                n++;
+            }
+            result = Math.max(result, count);
+        }
+
+        return result;
+    }
+
 
 }
