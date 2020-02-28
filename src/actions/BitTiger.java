@@ -1284,4 +1284,20 @@ public class BitTiger {
         return curNode;
     }
 
+    public boolean hasCycle(ListNode head) {
+        ListNode faster = head;
+        ListNode slower = head;
+
+        do {
+            if (faster == null || faster.next == null) {
+                return false;
+            }
+            faster = faster.next.next;
+            slower = slower.next;
+            if (faster == slower) {
+                return true;
+            }
+        } while (true);
+    }
+
 }
