@@ -790,4 +790,97 @@ public class BitTiger {
 
         return dp[word1.length()][word2.length()];
     }
+
+    public int largestRectangleArea(int[] heights) {
+        if (heights == null || heights.length == 0) {
+            return 0;
+        }
+
+        PriorityQueue<ValueIndexPair> pqLeft = new PriorityQueue<>(new LargestRectangleAreaComparator());
+        PriorityQueue<ValueIndexPair> pqRight = new PriorityQueue<>(new LargestRectangleAreaComparator());
+        int[] leftSize = new int[heights.length];
+        int[] rightSize = new int[heights.length];
+        for (int i = 0; i < heights.length; i++) {
+            pqLeft.add(new ValueIndexPair(heights[i], i));
+            int leftEdge = binarySearchValueIndexPairs(pqLeft.toArray(), heights[i], false, heights.length - 1);
+            leftSize[i] = leftEdge < 0 ? 0 : heights[i] * (i - leftEdge);
+        }
+        for (int i = heights.length - 1; i >= 0; i--) {
+            pqRight.add(new ValueIndexPair(heights[i], i));
+            int rightEdge = binarySearchValueIndexPairs(pqRight.toArray(), heights[i], true, heights.length - 1);
+            rightSize[i] = rightEdge < 0 ? 0 : heights[i] * (rightEdge - i);
+        }
+
+        int result = Integer.MIN_VALUE;
+        for (int i = 0; i < heights.length; i++) {
+            result = Math.max(result, leftSize[i] + rightSize[i] + 1);
+        }
+        return result;
+    }
+
+    private int binarySearchValueIndexPairs(Object[] objPairs, int target, boolean reverse, int lastIndex) {
+        ValueIndexPair[] pairs = new ValueIndexPair[objPairs.length];
+        for (int i = 0; i < objPairs.length; i++) {
+            pairs[i] = (ValueIndexPair) objPairs[i];
+        }
+        int left = 0;
+        int right = pairs.length - 1;
+        int mid = 0;
+        while (left < right - 1) {
+            mid = left + (right - left) / 2;
+            if (pairs[mid].value >= target) {
+                right = mid - 1;
+            } else {
+                left = mid;
+            }
+        }
+
+        if (pairs[mid].value >= target) {
+            while (mid >= 0 && pairs[mid].value >= target) {
+                mid--;
+            }
+        }
+
+        if (mid < 0) {
+            if (reverse) {
+                return lastIndex;
+            }
+            return 0;
+        }
+
+        if (!reverse) {
+            while (mid < pairs.length - 1 && pairs[mid + 1].value == pairs[mid].value) {
+                mid++;
+            }
+        } else {
+            while (mid > 0 && pairs[mid - 1].value == pairs[mid].value) {
+                mid--;
+            }
+        }
+        return pairs[mid].index;
+    }
+
+    private class ValueIndexPair {
+        public int value;
+        public int index;
+
+        public ValueIndexPair(int v, int i) {
+            value = v;
+            index = i;
+        }
+    }
+
+    private class LargestRectangleAreaComparator implements Comparator<ValueIndexPair> {
+        @Override
+        public int compare(ValueIndexPair o1, ValueIndexPair o2) {
+            if (o1.value < o2.value) {
+                return -1;
+            }
+            if (o1.value == o2.value) {
+                return o1.index < o2.index ? -1 : o1.index == o2.index ? 0 : 1;
+            }
+
+            return 1;
+        }
+    }
 }
