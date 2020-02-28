@@ -895,7 +895,7 @@ public class BitTiger {
 
         for (int i = 1; i < heights.length; i++) {
             int p = i - 1;
-            while (p > 0 && heights[p] >= heights[i]) {
+            while (p >= 0 && heights[p] >= heights[i]) {
                 p = leftMin[p];
             }
             leftMin[i] = p;
