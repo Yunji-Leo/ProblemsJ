@@ -1230,5 +1230,36 @@ public class BitTiger {
         return cloneNode;
     }
 
+    public int canCompleteCircuit(int[] gas, int[] cost) {
+        int start = 0;
+        int end = 0;
+        int fuel = gas[start] - cost[start];
+
+        do {
+            if (fuel >= 0) {
+                end++;
+                if (end = gas.length) {
+                    end = 0;
+                }
+                if (end == start) {
+                    return start;
+                }
+                fuel = fuel + gas[end] - cost[end];
+            } else {
+                start--;
+                if (start == -1) {
+                    start = gas.length - 1;
+                }
+                if (end == start) {
+                    return -1;
+                }
+                fuel = fuel + gas[start] - cost[start];
+            }
+
+        } while (start != end);
+
+        return -1;
+    }
+
 
 }
