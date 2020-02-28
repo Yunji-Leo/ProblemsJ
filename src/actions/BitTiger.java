@@ -1061,5 +1061,29 @@ public class BitTiger {
         return Math.max(maxDepth(root.left), maxDepth(root.right)) + 1;
     }
 
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        if (preorder == null || preorder.length == 0 || inorder == null || inorder.length == 0) {
+            return null;
+        }
+
+        return buildTreePreIn(preorder, 0, preorder.length, inorder, 0, inorder.length);
+    }
+
+    private TreeNode buildTreePreIn(int[] preorder, int preIndex, int preEnd, int[] inorder, int inLeft, int inRight) {
+        if (preIndex == preEnd) {
+            return null;
+        }
+
+        TreeNode node = new TreeNode(preorder[preIndex]);
+        for (int i = inLeft; i < inRight; i++) {
+            if (inorder[i] == preorder[preIndex]) {
+                int leftCount = i - inLeft;
+                node.left = buildTreePreIn(preorder, preIndex + 1, preIndex + leftCount + 1, inorder, inLeft, i);
+                node.right = buildTreePreIn(preorder, preIndex + leftCount + 1, preEnd, inorder, i + 1, inRight);
+            }
+        }
+        return node;
+    }
+
 
 }
