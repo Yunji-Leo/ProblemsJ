@@ -2,6 +2,7 @@ package actions;
 
 import actions.util.ListNode;
 import actions.util.Node;
+import actions.util.RandomNode;
 import actions.util.TreeNode;
 
 import java.util.*;
@@ -1261,5 +1262,26 @@ public class BitTiger {
         return -1;
     }
 
+    public RandomNode copyRandomList(RandomNode head) {
+        HashMap<RandomNode, RandomNode> map = new HashMap<>();
+        return copyRandomListRecur(head, map);
+    }
+
+    private RandomNode copyRandomListRecur(RandomNode node, HashMap<RandomNode, RandomNode> map) {
+        if (node == null) {
+            return null;
+        }
+        if (map.containsKey(node)) {
+            return map.get(node);
+        }
+
+        RandomNode curNode = new RandomNode(node.val);
+        map.put(node, curNode);
+
+        curNode.next = copyRandomListRecur(node.next, map);
+        curNode.random = copyRandomListRecur(node.random, map);
+
+        return curNode;
+    }
 
 }
