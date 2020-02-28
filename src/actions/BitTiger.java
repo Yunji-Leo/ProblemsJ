@@ -1066,22 +1066,25 @@ public class BitTiger {
             return null;
         }
 
-        return buildTreePreIn(preorder, 0, preorder.length, inorder, 0, inorder.length);
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < inorder.length; i++) {
+            map.put(inorder[i], i);
+        }
+
+        return buildTreePreIn(preorder, 0, preorder.length, 0, map);
     }
 
-    private TreeNode buildTreePreIn(int[] preorder, int preIndex, int preEnd, int[] inorder, int inLeft, int inRight) {
+    private TreeNode buildTreePreIn(int[] preorder, int preIndex, int preEnd, int inLeft, HashMap<Integer, Integer> map) {
         if (preIndex == preEnd) {
             return null;
         }
 
         TreeNode node = new TreeNode(preorder[preIndex]);
-        for (int i = inLeft; i < inRight; i++) {
-            if (inorder[i] == preorder[preIndex]) {
-                int leftCount = i - inLeft;
-                node.left = buildTreePreIn(preorder, preIndex + 1, preIndex + leftCount + 1, inorder, inLeft, i);
-                node.right = buildTreePreIn(preorder, preIndex + leftCount + 1, preEnd, inorder, i + 1, inRight);
-            }
-        }
+        int i = map.get(preorder[preIndex]);
+        int leftCount = i - inLeft;
+        node.left = buildTreePreIn(preorder, preIndex + 1, preIndex + leftCount + 1, inLeft, map);
+        node.right = buildTreePreIn(preorder, preIndex + leftCount + 1, preEnd, i + 1, map);
+
         return node;
     }
 
