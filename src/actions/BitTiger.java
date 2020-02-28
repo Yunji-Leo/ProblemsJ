@@ -1300,4 +1300,30 @@ public class BitTiger {
         } while (true);
     }
 
+    public List<Integer> postorderTraversal(TreeNode root) {
+        List<Integer> result = new ArrayList<>();
+        if (root == null) {
+            return result;
+        }
+        Deque<TreeNode> stack = new ArrayDeque<>();
+        HashSet<TreeNode> visited = new HashSet<>();
+
+        stack.push(root);
+        while (!stack.isEmpty()) {
+            TreeNode node = stack.pop();
+            if (visited.contains(node)) {
+                result.add(node.val);
+                continue;
+            } else {
+                visited.add(node);
+                stack.push(node);
+                if (node.right != null)
+                    stack.push(node.right);
+                if (node.left != null)
+                    stack.push(node.left);
+            }
+        }
+        return result;
+    }
+
 }
