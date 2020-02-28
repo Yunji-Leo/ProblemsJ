@@ -1129,5 +1129,20 @@ public class BitTiger {
         return node;
     }
 
+    public int maxProfit(int[] prices) {
+        int result = 0;
+        int curMin = Integer.MAX_VALUE;
+
+        for (int val : prices) {
+            if (val <= curMin) {
+                curMin = val;
+            } else {
+                result = Math.max(result, val - curMin);
+            }
+        }
+
+        return result;
+    }
+
 
 }
