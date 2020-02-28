@@ -1027,4 +1027,30 @@ public class BitTiger {
 
         return result;
     }
+
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> result = new ArrayList<>();
+        Queue<TreeNode> queue = new LinkedList<>();
+
+        if (root == null) {
+            return result;
+        }
+        queue.add(root);
+        while (!queue.isEmpty()) {
+            int levelNumber = queue.size();
+            List<Integer> subList = new ArrayList<>();
+            for (int i = 0; i < levelNumber; i++) {
+                TreeNode node = queue.poll();
+                if (node.left != null) {
+                    queue.add(node.left);
+                }
+                if (node.right != null) {
+                    queue.add(node.right);
+                }
+                subList.add(node.val);
+            }
+            result.add(subList);
+        }
+        return result;
+    }
 }
