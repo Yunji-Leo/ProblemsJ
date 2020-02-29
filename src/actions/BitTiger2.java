@@ -98,7 +98,7 @@ public class BitTiger2 {
         numerator = Math.abs(remainder);
         denominator = Math.abs(denominator);
         HashMap<Long, Integer> recurIndexMap = new HashMap<>();
-        String deciResult = "";
+        StringBuilder deciResult = new StringBuilder();
         while (true) {
             if (!recurIndexMap.containsKey(numerator)) {
                 recurIndexMap.put(numerator, deciResult.length());
@@ -108,13 +108,13 @@ public class BitTiger2 {
                     numerator *= 10;
                 }
                 while (preZero > 0) {
-                    deciResult += "0";
+                    deciResult.append("0");
                     preZero--;
                 }
                 quotient = numerator / denominator;
                 remainder = numerator % denominator;
                 String qValue = String.valueOf(quotient);
-                deciResult += qValue;
+                deciResult.append(qValue);
                 if (remainder == 0) {
                     break;
                 }
@@ -122,11 +122,46 @@ public class BitTiger2 {
             } else {
                 int index = recurIndexMap.get(numerator);
                 String firstPart = deciResult.substring(0, index);
-                String secondPart = deciResult.substring(index);
-                deciResult = firstPart + "(" + secondPart + ")";
+                String secondPart = deciResult.substring(index, deciResult.length());
+                deciResult = new StringBuilder(firstPart + "(" + secondPart + ")");
                 break;
             }
         }
         return result + deciResult;
+    }
+
+    public int majorityElement(int[] nums) {
+        int result = nums[0];
+        int count = 1;
+
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] != result) {
+                if (count == 0) {
+                    result = nums[i];
+                    count = 1;
+                } else {
+                    count--;
+                }
+            } else {
+                count++;
+            }
+        }
+
+        return result;
+    }
+
+    public int titleToNumber(String s) {
+        int result = 0;
+        int multiplier = 0;
+        for (int i = s.length() - 1; i >= 0; i--) {
+            int value = s.charAt(i) - 'A' + 1;
+            int mul = 1;
+            for (int j = 0; j < multiplier; j++) {
+                mul *= 26;
+            }
+            result += mul * value;
+            multiplier++;
+        }
+        return result;
     }
 }

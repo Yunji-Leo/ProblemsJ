@@ -2,6 +2,7 @@ package actions;
 
 public class BitTigerTest {
     BitTiger test = new BitTiger();
+    BitTiger2 test2 = new BitTiger2();
 
     @org.junit.Test
     public void testMethod() {
@@ -12,5 +13,10 @@ public class BitTigerTest {
         int result = test.largestRectangleArea(new int[]{2, 1, 2});
         test.minWindow("ADOBECODEBANC", "ABC");
         test.search(new int[]{3, 1}, 3);
+    }
+
+    @org.junit.Test
+    public void testMethod2() {
+        test2.fractionToDecimal(1, 6);
     }
 }
