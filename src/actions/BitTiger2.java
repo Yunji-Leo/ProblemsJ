@@ -4,6 +4,7 @@ import actions.util.ListNode;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.HashMap;
 
 public class BitTiger2 {
     class MinStack {
@@ -77,5 +78,53 @@ public class BitTiger2 {
                 l = mid + 1;
         }
         return l;
+    }
+
+    public String fractionToDecimal(int numerator, int denominator) {
+        int quotient = numerator / denominator;
+        int remainder = numerator % denominator;
+        String result = String.valueOf(quotient);
+
+        if (remainder == 0) {
+            return result;
+        }
+        if (quotient == 0 && (numerator > 0 && denominator < 0 || numerator < 0 && denominator > 0)) {
+            result = "-" + result;
+        }
+        result += ".";
+
+        numerator = Math.abs(remainder);
+        denominator = Math.abs(denominator);
+        HashMap<Integer, Integer> recurIndexMap = new HashMap<>();
+        String deciResult = "";
+        while (true) {
+            if (!recurIndexMap.containsKey(numerator)) {
+                recurIndexMap.put(numerator, deciResult.length());
+                int preZero = -1;
+                while (numerator < denominator) {
+                    preZero++;
+                    numerator *= 10;
+                }
+                while (preZero > 0) {
+                    deciResult += "0";
+                    preZero--;
+                }
+                quotient = numerator / denominator;
+                remainder = numerator % denominator;
+                String qValue = String.valueOf(quotient);
+                deciResult += qValue;
+                if (remainder == 0) {
+                    break;
+                }
+                numerator = remainder;
+            } else {
+                int index = recurIndexMap.get(numerator);
+                String firstPart = deciResult.substring(0, index);
+                String secondPart = deciResult.substring(index);
+                deciResult = firstPart + "(" + secondPart + ")";
+                break;
+            }
+        }
+        return result + deciResult;
     }
 }
