@@ -80,9 +80,11 @@ public class BitTiger2 {
         return l;
     }
 
-    public String fractionToDecimal(int numerator, int denominator) {
-        int quotient = numerator / denominator;
-        int remainder = numerator % denominator;
+    public String fractionToDecimal(int numeratorInt, int denominatorInt) {
+        long numerator = (long) numeratorInt;
+        long denominator = (long) denominatorInt;
+        long quotient = numerator / denominator;
+        long remainder = numerator % denominator;
         String result = String.valueOf(quotient);
 
         if (remainder == 0) {
@@ -95,7 +97,7 @@ public class BitTiger2 {
 
         numerator = Math.abs(remainder);
         denominator = Math.abs(denominator);
-        HashMap<Integer, Integer> recurIndexMap = new HashMap<>();
+        HashMap<Long, Integer> recurIndexMap = new HashMap<>();
         String deciResult = "";
         while (true) {
             if (!recurIndexMap.containsKey(numerator)) {
