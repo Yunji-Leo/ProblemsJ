@@ -1146,7 +1146,7 @@ public class BitTiger {
         return result;
     }
 
-    public int maxProfit(int[] prices) {
+    public int maxProfit2(int[] prices) {
         int result = 0;
         for (int i = 1; i < prices.length; i++) {
             if (prices[i] > prices[i - 1]) {
@@ -1239,7 +1239,7 @@ public class BitTiger {
         do {
             if (fuel >= 0) {
                 end++;
-                if (end = gas.length) {
+                if (end == gas.length) {
                     end = 0;
                 }
                 if (end == start) {
@@ -1326,4 +1326,82 @@ public class BitTiger {
         return result;
     }
 
+    public static class LRUCache {
+        class DoubleLinkedListNode {
+            int key;
+            int val;
+            DoubleLinkedListNode next;
+            DoubleLinkedListNode prev;
+
+            public DoubleLinkedListNode(int _key, int _val) {
+                key = _key;
+                val = _val;
+            }
+        }
+
+        HashMap<Integer, DoubleLinkedListNode> map;
+        DoubleLinkedListNode head;
+        DoubleLinkedListNode end;
+        int capacity;
+        int count;
+
+        public LRUCache(int capacity) {
+            this.capacity = capacity;
+            count = 0;
+            head = new DoubleLinkedListNode(-1, -1);
+            end = head;
+            map = new HashMap<>();
+        }
+
+        public int get(int key) {
+            if (map.containsKey(key)) {
+                DoubleLinkedListNode node = map.get(key);
+                if (node != end) {
+                    DoubleLinkedListNode prev = node.prev;
+                    DoubleLinkedListNode next = node.next;
+                    prev.next = next;
+                    if (next != null)
+                        next.prev = prev;
+                    end.next = node;
+                    node.prev = end;
+                    end = node;
+                }
+                return node.val;
+            } else {
+                return -1;
+            }
+        }
+
+        public void put(int key, int value) {
+            if (capacity == 0) {
+                return;
+            }
+            if (map.containsKey(key)) {
+                get(key);
+                DoubleLinkedListNode node = map.get(key);
+                node.val = value;
+            } else if (count < capacity) {
+                DoubleLinkedListNode newNode = new DoubleLinkedListNode(key, value);
+                map.put(key, newNode);
+                end.next = newNode;
+                newNode.prev = end;
+                end = newNode;
+                count++;
+            } else {
+                DoubleLinkedListNode first = head.next;
+                head.next = first.next;
+                if (head.next != null) {
+                    head.next.prev = head;
+                }
+                map.remove(first.key);
+                first.next = null;
+                first.prev = null;
+                count--;
+                if (end == first) {
+                    end = head;
+                }
+                put(key, value);
+            }
+        }
+    }
 }
