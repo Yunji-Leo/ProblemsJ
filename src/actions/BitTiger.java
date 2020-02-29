@@ -1404,4 +1404,57 @@ public class BitTiger {
             }
         }
     }
+
+    public int maxPoints(int[][] points) {
+        if (points == null || points.length == 0) {
+            return 0;
+        }
+
+        int result = 1;
+
+        for (int i = 0; i < points.length - 1; i++) {
+            int overlap = 0;
+            HashMap<Integer, HashMap<Integer, Integer>> map = new HashMap<>();
+            for (int j = i + 1; j < points.length; j++) {
+                if (points[i][0] == points[j][0] && points[i][1] == points[j][1]) {
+                    overlap++;
+                    continue;
+                }
+                int x = points[i][0] - points[j][0];
+                int y = points[i][1] - points[j][1];
+                int k = GCD(x, y);
+                x /= k;
+                y /= k;
+                if (!map.containsKey(x)) {
+                    HashMap<Integer, Integer> counts = new HashMap<>();
+                    counts.put(y, 1);
+                    map.put(x, counts);
+                } else {
+                    HashMap<Integer, Integer> counts = map.get(x);
+                    if (!counts.containsKey(y)) {
+                        counts.put(y, 1);
+                    } else {
+                        int curCount = counts.get(y);
+                        counts.put(y, curCount + 1);
+                    }
+                }
+            }
+            int self = overlap + 1;
+            result = Math.max(result, self);
+            for (HashMap<Integer, Integer> m : map.values()) {
+                for (int value : m.values()) {
+                    result = Math.max(result, self + value);
+                }
+            }
+        }
+
+        return result;
+    }
+
+    private int GCD(int x, int y) {
+        if (y == 0) {
+            return x;
+        }
+        return GCD(y, x % y);
+    }
 }
