@@ -1,5 +1,7 @@
 package actions;
 
+import actions.util.ListNode;
+
 import java.util.ArrayDeque;
 import java.util.Deque;
 
@@ -36,6 +38,32 @@ public class BitTiger2 {
 
         public int getMin() {
             return min.peek();
+        }
+    }
+
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        if (headA == null || headB == null)
+            return null;
+        ListNode runnerA = headA;
+        ListNode runnerB = headB;
+        boolean flip = false;
+        while (true) {
+            if (runnerA == runnerB) {
+                return runnerA;
+            }
+            if (runnerA == null) {
+                if (!flip) {
+                    runnerA = headB;
+                    flip = true;
+                } else {
+                    return null;
+                }
+            }
+            if (runnerB == null) {
+                runnerB = headA;
+            }
+            runnerA = runnerA.next;
+            runnerB = runnerB.next;
         }
     }
 }
