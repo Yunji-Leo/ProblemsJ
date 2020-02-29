@@ -1457,4 +1457,35 @@ public class BitTiger {
         }
         return GCD(y, x % y);
     }
+
+    public int evalRPN(String[] tokens) {
+        Deque<Integer> stack = new ArrayDeque<>();
+        HashSet<String> set = new HashSet<>(Arrays.asList(new String[]{"+", "-", "*", "/"}));
+
+        int result = 0;
+        for (String t : tokens) {
+            if (set.contains(t)) {
+                int second = stack.pop();
+                int first = stack.pop();
+                int ans = 0;
+                switch (t) {
+                    case "+":
+                        ans = first + second;
+                        break;
+                    case "-":
+                        ans = first - second;
+                        break;
+                    case "*":
+                        ans = first * second;
+                        break;
+                    case "/":
+                        ans = first / second;
+                }
+                stack.push(ans);
+            } else {
+                stack.push(Integer.valueOf(t));
+            }
+        }
+        return stack.pop();
+    }
 }
