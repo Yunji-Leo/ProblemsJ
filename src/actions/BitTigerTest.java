@@ -17,6 +17,7 @@ public class BitTigerTest {
 
     @org.junit.Test
     public void testMethod2() {
+        test2.canFinish(2, new int[][]{{0, 1}, {1, 0}});
         test2.countPrimes(1500000);
         test2.isHappy(19);
         test2.fractionToDecimal(1, 6);

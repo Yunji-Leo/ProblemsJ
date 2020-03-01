@@ -353,4 +353,42 @@ public class BitTiger2 {
         return prev;
     }
 
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        HashMap<Integer, List<Integer>> prereqMap = new HashMap<>();
+        HashSet<Integer> canFinishCourses = new HashSet<>();
+        for (int i = 0; i < prerequisites.length; i++) {
+            if (!prereqMap.containsKey(prerequisites[i][0])) {
+                prereqMap.put(prerequisites[i][0], new ArrayList<>());
+            }
+            prereqMap.get(prerequisites[i][0]).add(prerequisites[i][1]);
+        }
+        for (int i = 0; i < numCourses; i++) {
+            if (!canFinishRecur(i, prereqMap, canFinishCourses, new HashSet<>())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean canFinishRecur(int course, HashMap<Integer, List<Integer>> prereqMap, HashSet<Integer> canFinishCourses, HashSet<Integer> visited) {
+        if (canFinishCourses.contains(course)) {
+            return true;
+        }
+        if (visited.contains(course)) {
+            return false;
+        }
+        visited.add(course);
+        if (!prereqMap.containsKey(course)) {
+            canFinishCourses.add(course);
+            return true;
+        }
+        for (int preCourse : prereqMap.get(course)) {
+            if (!canFinishRecur(preCourse, prereqMap, canFinishCourses, visited)) {
+                return false;
+            }
+        }
+        canFinishCourses.add(course);
+        return true;
+    }
+
 }
