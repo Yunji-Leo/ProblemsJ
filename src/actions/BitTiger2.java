@@ -312,5 +312,18 @@ public class BitTiger2 {
         DFSMarking(grid, i, j - 1, M, N);
     }
 
+    public boolean isHappy(int n) {
+        HashSet<Integer> set = new HashSet<>();
+        while (n != 1 && !set.contains(n)) {
+            set.add(n);
+            int result = 0;
+            while (n != 0) {
+                result += (n % 10) * (n % 10);
+                n /= 10;
+            }
+            n = result;
+        }
+        return n == 1;
+    }
 
 }
