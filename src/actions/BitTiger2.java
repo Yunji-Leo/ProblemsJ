@@ -391,4 +391,67 @@ public class BitTiger2 {
         return true;
     }
 
+    class Trie {
+
+        TrieNode root;
+
+        /**
+         * Initialize your data structure here.
+         */
+        public Trie() {
+            root = new TrieNode();
+        }
+
+        /**
+         * Inserts a word into the trie.
+         */
+        public void insert(String word) {
+            TrieNode cur = root;
+            for (char c : word.toCharArray()) {
+                if (cur.nodes[c - 'a'] == null) {
+                    cur.nodes[c - 'a'] = new TrieNode();
+                }
+                cur = cur.nodes[c - 'a'];
+            }
+            cur.isWord = true;
+        }
+
+        /**
+         * Returns if the word is in the trie.
+         */
+        public boolean search(String word) {
+            TrieNode cur = root;
+            for (char c : word.toCharArray()) {
+                if (cur.nodes[c - 'a'] == null) {
+                    return false;
+                }
+                cur = cur.nodes[c - 'a'];
+            }
+            return cur.isWord == true;
+        }
+
+        /**
+         * Returns if there is any word in the trie that starts with the given prefix.
+         */
+        public boolean startsWith(String prefix) {
+            TrieNode cur = root;
+            for (char c : prefix.toCharArray()) {
+                if (cur.nodes[c - 'a'] == null) {
+                    return false;
+                }
+                cur = cur.nodes[c - 'a'];
+            }
+            return true;
+        }
+
+        class TrieNode {
+            boolean isWord;
+            TrieNode[] nodes;
+
+            public TrieNode() {
+                nodes = new TrieNode[26];
+            }
+        }
+    }
+
 }
