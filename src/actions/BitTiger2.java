@@ -328,13 +328,13 @@ public class BitTiger2 {
 
     public int countPrimes(int n) {
         int count = 0;
-        HashSet<Integer> set = new HashSet<>();
+        boolean[] nonPrime = new boolean[n];
         for (int i = 2; i < n; i++) {
-            if (!set.contains(i)) {
+            if (!nonPrime[i]) {
                 count++;
                 int x = i;
                 while (x < n) {
-                    set.add(x);
+                    nonPrime[x] = true;
                     x += i;
                 }
             }
