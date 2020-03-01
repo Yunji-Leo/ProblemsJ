@@ -2,9 +2,7 @@ package actions;
 
 import actions.util.ListNode;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.HashMap;
+import java.util.*;
 
 public class BitTiger2 {
     class MinStack {
@@ -196,5 +194,69 @@ public class BitTiger2 {
         }
 
         return dp[0][0];
+    }
+
+    public String largestNumber(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+
+        String[] snums = new String[nums.length];
+        for (int i = 0; i < nums.length; i++) {
+            snums[i] = String.valueOf(nums[i]);
+        }
+        Arrays.sort(snums, new LargestNumberComparator());
+        for (String s : snums) {
+            sb.append(s);
+        }
+        if (sb.charAt(0) == '0')
+            return "0";
+        return sb.toString();
+    }
+
+    class LargestNumberComparator implements Comparator<String> {
+        @Override
+        public int compare(String s1, String s2) {
+            int i = 0;
+            while (i < s1.length() && i < s2.length()) {
+                if (s1.charAt(i) < s2.charAt(i)) {
+                    return 1;
+                } else if (s1.charAt(i) > s2.charAt(i)) {
+                    return -1;
+                }
+                i++;
+            }
+            if (s1.length() == s2.length()) {
+                return 0;
+            }
+            if (s1.length() > s2.length()) {
+                for (int k = s1.length() - 1; k > 0; k--) {
+                    if (s1.charAt(k) > s1.charAt(0)) {
+                        return -1;
+                    } else if (s1.charAt(k) < s1.charAt(0)) {
+                        return 1;
+                    } else if (s1.charAt(k) > s1.charAt(k - 1)) {
+                        return -1;
+                    } else if (s1.charAt(k) < s1.charAt(k - 1)) {
+                        return 1;
+                    }
+                }
+                return 0;
+            } else {
+                for (int k = s2.length() - 1; k > 0; k--) {
+                    if (s2.charAt(k) > s2.charAt(0)) {
+                        return 1;
+                    } else if (s2.charAt(k) < s2.charAt(0)) {
+                        return -1;
+                    } else if (s2.charAt(k) > s2.charAt(k - 1)) {
+                        return 1;
+                    } else if (s2.charAt(k) < s2.charAt(k - 1)) {
+                        return -1;
+                    }
+                }
+                return 0;
+            }
+        }
     }
 }
