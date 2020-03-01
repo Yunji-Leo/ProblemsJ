@@ -326,4 +326,20 @@ public class BitTiger2 {
         return n == 1;
     }
 
+    public int countPrimes(int n) {
+        int count = 0;
+        HashSet<Integer> set = new HashSet<>();
+        for (int i = 2; i < n; i++) {
+            if (!set.contains(i)) {
+                count++;
+                int x = i;
+                while (x < n) {
+                    set.add(x);
+                    x += i;
+                }
+            }
+        }
+        return count;
+    }
+
 }
