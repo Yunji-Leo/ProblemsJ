@@ -542,5 +542,16 @@ public class BitTiger2 {
         return minHeap.poll();
     }
 
+    public boolean containsDuplicate(int[] nums) {
+        HashSet<Integer> set = new HashSet<>();
+        for (int n : nums) {
+            if (set.contains(n)) {
+                return true;
+            }
+            set.add(n);
+        }
+        return false;
+    }
+
 
 }
