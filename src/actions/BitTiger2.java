@@ -1,6 +1,7 @@
 package actions;
 
 import actions.util.ListNode;
+import actions.util.TreeNode;
 
 import java.util.*;
 
@@ -672,6 +673,22 @@ public class BitTiger2 {
             result += i;
         }
         return result;
+    }
+
+    public int kthSmallest(TreeNode root, int k) {
+        Deque<TreeNode> stack = new ArrayDeque<>();
+
+        while (true) {
+            while (root != null) {
+                stack.push(root);
+                root = root.left;
+            }
+            root = stack.pop();
+            if (--k == 0) {
+                return root.val;
+            }
+            root = root.right;
+        }
     }
 
 }
