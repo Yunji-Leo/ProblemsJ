@@ -1,5 +1,6 @@
 package actions;
 
+import actions.util.ListNode;
 import actions.util.TreeNode;
 
 public class BitTigerTest {
@@ -27,7 +28,7 @@ public class BitTigerTest {
     }
 
     @org.junit.Test
-    public void testMethod3() {
+    public void testMethodTreeNode() {
         TreeNode node0 = new TreeNode(0);
         TreeNode node1 = new TreeNode(1);
         TreeNode node2 = new TreeNode(2);
@@ -46,5 +47,11 @@ public class BitTigerTest {
         node2.left = node7;
         node2.right = node4;
         test2.lowestCommonAncestor2(node3, node5, node1);
+    }
+
+    @org.junit.Test
+    public void testMethodListNode() {
+        ListNode node0 = new ListNode(0);
+        test2.deleteNode(node0);
     }
 }
