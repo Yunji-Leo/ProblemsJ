@@ -496,7 +496,7 @@ public class BitTiger2 {
         return result;
     }
 
-    public int rob(int[] nums) {
+    public int rob2(int[] nums) {
         if (nums == null || nums.length == 0) {
             return 0;
         }
@@ -551,6 +551,55 @@ public class BitTiger2 {
             set.add(n);
         }
         return false;
+    }
+
+    public List<List<Integer>> getSkyline(int[][] buildings) {
+        List<List<Integer>> result = new ArrayList<>();
+        if (buildings == null || buildings.length == 0) {
+            return result;
+        }
+
+        PriorityQueue<int[]> buildingQueue = new PriorityQueue<>(new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                if (o1[0] != o2[0]) {
+                    return o1[0] - o2[0];
+                }
+                return o2[1] - o1[1];
+            }
+        });
+
+        for (int[] b : buildings) {
+            buildingQueue.add(new int[]{b[0], b[2]});
+            buildingQueue.add(new int[]{b[1], -b[2]});
+        }
+
+        PriorityQueue<Integer> heightQueue = new PriorityQueue<>(Collections.reverseOrder());
+        heightQueue.add(0);
+        int curHeight = 0;
+        while (!buildingQueue.isEmpty()) {
+            int[] b = buildingQueue.poll();
+            if (b[1] > 0) {
+                if (b[1] > curHeight) {
+                    List<Integer> l = new ArrayList<>();
+                    l.add(b[0]);
+                    l.add(b[1]);
+                    result.add(l);
+                    curHeight = b[1];
+                }
+                heightQueue.add(b[1]);
+            } else {
+                heightQueue.remove(-b[1]);
+                if (curHeight > heightQueue.peek()) {
+                    curHeight = heightQueue.peek();
+                    List<Integer> l = new ArrayList<>();
+                    l.add(b[0]);
+                    l.add(curHeight);
+                    result.add(l);
+                }
+            }
+        }
+        return result;
     }
 
 
