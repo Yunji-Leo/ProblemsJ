@@ -691,4 +691,41 @@ public class BitTiger2 {
         }
     }
 
+    public boolean isPalindrome(ListNode head) {
+        if (head == null) {
+            return true;
+        }
+
+        ListNode faster = head;
+        ListNode slower = head;
+        while (faster != null && faster.next != null) {
+            faster = faster.next.next;
+            slower = slower.next;
+        }
+
+        ListNode prev = null;
+        ListNode cur = head;
+        while (cur != slower) {
+            ListNode next = cur.next;
+            cur.next = prev;
+            prev = cur;
+            cur = next;
+        }
+
+        if (faster != null) {
+            slower = slower.next;
+        }
+        while (slower != null && prev != null) {
+            if (slower.val != prev.val) {
+                return false;
+            }
+            slower = slower.next;
+            prev = prev.next;
+        }
+        if (slower != null || prev != null) {
+            return false;
+        }
+        return true;
+    }
+
 }
