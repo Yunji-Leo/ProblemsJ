@@ -728,4 +728,18 @@ public class BitTiger2 {
         return true;
     }
 
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if (root == null || p == null || q == null) {
+            return root;
+        }
+        while (root != null && root.val != p.val && root.val != q.val && !(p.val < root.val && q.val > root.val) && !(p.val > root.val && q.val < root.val)) {
+            if (p.val < root.val) {
+                root = root.left;
+            } else {
+                root = root.right;
+            }
+        }
+        return root;
+    }
+
 }
