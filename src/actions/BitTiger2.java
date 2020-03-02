@@ -525,5 +525,22 @@ public class BitTiger2 {
         return Math.max(result, dp[dp.length - 1]);
     }
 
+    public int findKthLargest(int[] nums, int k) {
+        if (nums == null || nums.length == 0 || k == 0) {
+            return 0;
+        }
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+        for (int n : nums) {
+            if (k > 0) {
+                minHeap.add(n);
+                k--;
+            } else if (n > minHeap.peek()) {
+                minHeap.add(n);
+                minHeap.poll();
+            }
+        }
+        return minHeap.poll();
+    }
+
 
 }
