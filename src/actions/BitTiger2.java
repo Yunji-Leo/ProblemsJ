@@ -454,4 +454,47 @@ public class BitTiger2 {
         }
     }
 
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        if (numCourses == 0) {
+            return new int[]{};
+        }
+        int[] result = new int[numCourses];
+        HashMap<Integer, List<Integer>> reverseDeps = new HashMap<>();
+        int[] degrees = new int[numCourses];
+        for (int[] prereq : prerequisites) {
+            degrees[prereq[0]]++;
+            if (!reverseDeps.containsKey(prereq[1])) {
+                reverseDeps.put(prereq[1], new ArrayList<>());
+            }
+            reverseDeps.get(prereq[1]).add(prereq[0]);
+        }
+
+        Queue<Integer> orderQueue = new LinkedList<>();
+        int index = 0;
+        for (int i = 0; i < numCourses; i++) {
+            if (degrees[i] == 0) {
+                orderQueue.add(i);
+            }
+        }
+
+        while (!orderQueue.isEmpty()) {
+            int course = orderQueue.poll();
+            result[index] = course;
+            index++;
+            if (reverseDeps.containsKey(course)) {
+                for (int dep : reverseDeps.get(course)) {
+                    degrees[dep]--;
+                    if (degrees[dep] == 0) {
+                        orderQueue.add(dep);
+                    }
+                }
+            }
+        }
+        if (index != numCourses) {
+            return new int[]{};
+        }
+        return result;
+    }
+
+
 }
