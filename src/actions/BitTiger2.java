@@ -742,4 +742,48 @@ public class BitTiger2 {
         return root;
     }
 
+    public TreeNode lowestCommonAncestor2(TreeNode root, TreeNode p, TreeNode q) {
+        if (root == null || p == null || q == null) {
+            return null;
+        }
+        Deque<TreeNode> postP = new ArrayDeque<>();
+        Deque<TreeNode> postQ = new ArrayDeque<>();
+
+
+        postP.push(root);
+        lowestCommonAncestorDeque(postP, p);
+        postQ.push(root);
+        lowestCommonAncestorDeque(postQ, q);
+
+        TreeNode ancestor = root;
+        while (!postP.isEmpty() && !postQ.isEmpty()) {
+            if (postP.peekLast() == postQ.peekLast()) {
+                ancestor = postP.pollLast();
+                postQ.pollLast();
+                continue;
+            }
+            break;
+        }
+        return ancestor;
+    }
+
+    private void lowestCommonAncestorDeque(Deque<TreeNode> postDeque, TreeNode target) {
+        HashSet<TreeNode> visited = new HashSet<>();
+        while (!postDeque.isEmpty()) {
+            TreeNode cur = postDeque.pop();
+            if (cur == target) {
+                postDeque.push(cur); // add back
+                break;
+            }
+            if (!visited.contains(cur)) {
+                visited.add(cur);
+                postDeque.push(cur);
+                if (cur.right != null)
+                    postDeque.push(cur.right);
+                if (cur.left != null)
+                    postDeque.push(cur.left);
+            }
+        }
+    }
+
 }
