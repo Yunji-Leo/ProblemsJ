@@ -840,4 +840,54 @@ public class BitTiger2 {
         node = new ListNode(99);
     }
 
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        if (nums == null || nums.length == 0) {
+            return new int[]{};
+        }
+
+        PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+        for (int i = 0; i < k; i++) {
+            pq.add(nums[i]);
+        }
+
+        int[] result = new int[nums.length - k + 1];
+        result[0] = pq.peek();
+
+        for (int i = k; i < nums.length; i++) {
+            pq.remove(nums[i - k]);
+            pq.add(nums[i]);
+            result[i - k + 1] = pq.peek();
+        }
+        return result;
+    }
+
+    public int[] maxSlidingWindowDeque(int[] nums, int k) {
+        if (nums == null || nums.length == 0) {
+            return new int[]{};
+        }
+
+        Deque<Integer> deque = new ArrayDeque<>();
+        for (int i = 0; i < k; i++) {
+            while (!deque.isEmpty() && deque.peekLast() < nums[i]) {
+                deque.removeLast();
+            }
+            deque.addLast(nums[i]);
+        }
+
+        int[] result = new int[nums.length - k + 1];
+        result[0] = deque.peek();
+        for (int i = k; i < nums.length; i++) {
+            if (nums[i - k] == deque.peek()) {
+                deque.removeFirst();
+            }
+            while (!deque.isEmpty() && deque.peekLast() < nums[i]) {
+                deque.removeLast();
+            }
+            deque.addLast(nums[i]);
+            result[i - k + 1] = deque.peek();
+        }
+
+        return result;
+    }
+
 }

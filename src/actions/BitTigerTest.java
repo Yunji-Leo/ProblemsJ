@@ -20,6 +20,7 @@ public class BitTigerTest {
 
     @org.junit.Test
     public void testMethod2() {
+        test2.maxSlidingWindowDeque(new int[]{1, 3, 1, 2, 0, 5}, 3);
         test2.calculate2("3+2*2");
         test2.canFinish(2, new int[][]{{0, 1}, {1, 0}});
         test2.countPrimes(1500000);
