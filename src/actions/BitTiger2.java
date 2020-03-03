@@ -1048,4 +1048,21 @@ public class BitTiger2 {
         return left;
     }
 
+    public int coinChange(int[] coins, int amount) {
+        if (amount == 0 || coins == null) {
+            return 0;
+        }
+        int[] dp = new int[amount + 1];
+        for (int i = 1; i <= amount; i++) {
+            int minNumber = Integer.MAX_VALUE;
+            for (int j = 0; j < coins.length; j++) {
+                if (i - coins[j] >= 0 && dp[i - coins[j]] != Integer.MAX_VALUE) {
+                    minNumber = Math.min(minNumber, 1 + dp[i - coins[j]]);
+                }
+            }
+            dp[i] = minNumber;
+        }
+        return dp[amount] == Integer.MAX_VALUE ? -1 : dp[amount];
+    }
+
 }
