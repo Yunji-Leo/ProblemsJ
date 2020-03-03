@@ -910,4 +910,58 @@ public class BitTiger2 {
         return ptr1;
     }
 
+    public void gameOfLife(int[][] board) {
+        if (board == null || board.length == 0) {
+            return;
+        }
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                board[i][j] = checkValue(board, i, j);
+            }
+        }
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                if (board[i][j] >= 1) {
+                    board[i][j] = 1;
+                } else {
+                    board[i][j] = 0;
+                }
+            }
+        }
+    }
+
+    private int checkValue(int[][] borad, int i, int j) {
+        int cur = borad[i][j];
+        int live = 0;
+        for (int r = -1; r <= 1; r++) {
+            for (int c = -1; c <= 1; c++) {
+                int newR = i + r;
+                int newC = j + c;
+                if (r == 0 && c == 0) {
+                    continue;
+                }
+                if (newR >= 0 && newR < borad.length && newC >= 0 && newC < borad[0].length) {
+                    if (borad[newR][newC] == 1 || borad[newR][newC] == -1) {
+                        live++;
+                    }
+                }
+            }
+        }
+        switch (cur) {
+            case 0:
+                if (live == 3) {
+                    return 2;
+                } else {
+                    return 0;
+                }
+            case 1:
+                if (live < 2 || live > 3) {
+                    return -1;
+                } else {
+                    return 1;
+                }
+        }
+        return 0;
+    }
+
 }
