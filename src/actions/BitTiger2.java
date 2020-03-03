@@ -994,4 +994,58 @@ public class BitTiger2 {
         }
     }
 
+    public int lengthOfLIS(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+
+        int[] dp = new int[nums.length];
+        dp[nums.length - 1] = 1;
+        for (int i = nums.length - 2; i >= 0; i--) {
+            int maxRes = 1;
+            for (int j = i + 1; j < nums.length; j++) {
+                if (nums[i] < nums[j]) {
+                    maxRes = Math.max(maxRes, 1 + dp[j]);
+                }
+            }
+            dp[i] = maxRes;
+        }
+        int result = 1;
+        for (int i = 0; i < dp.length; i++) {
+            result = Math.max(result, dp[i]);
+        }
+        return result;
+    }
+
+    public List<Integer> countSmaller(int[] nums) {
+        Integer[] ans = new Integer[nums.length];
+        List<Integer> sorted = new ArrayList<>();
+        for (int i = nums.length - 1; i >= 0; i--) {
+            int index = findIndex(sorted, nums[i]);
+            ans[i] = index;
+            sorted.add(index, nums[i]);
+        }
+        return Arrays.asList(ans);
+    }
+
+    private int findIndex(List<Integer> sorted, int target) {
+        if (sorted.size() == 0) {
+            return 0;
+        }
+        int left = 0;
+        int right = sorted.size() - 1;
+        if (target > sorted.get(right)) {
+            return right + 1;
+        }
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            if (target <= sorted.get(mid)) { // be care of <=
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return left;
+    }
+
 }
