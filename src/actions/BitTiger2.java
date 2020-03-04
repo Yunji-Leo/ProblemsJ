@@ -1377,4 +1377,41 @@ public class BitTiger2 {
         }
     }
 
+    class SolutionShuffle {
+        int[] nums;
+        Random rand;
+
+        public SolutionShuffle(int[] nums) {
+            this.nums = nums;
+            rand = new Random();
+        }
+
+        /**
+         * Resets the array to its original configuration and return it.
+         */
+        public int[] reset() {
+            return nums;
+        }
+
+        /**
+         * Returns a random shuffling of the array.
+         */
+        public int[] shuffle() {
+            int[] shuffled = Arrays.copyOf(nums, nums.length);
+            int k = 0;
+            while (k < nums.length) {
+                int index = k + rand.nextInt(nums.length - k);
+                swap(shuffled, k, index);
+                k++;
+            }
+            return shuffled;
+        }
+
+        private void swap(int[] nums, int i, int j) {
+            int tmp = nums[i];
+            nums[i] = nums[j];
+            nums[j] = tmp;
+        }
+    }
+
 }
