@@ -1346,4 +1346,35 @@ public class BitTiger2 {
         }
     }
 
+    class Solution {
+        Random rand;
+        ListNode head;
+
+        /**
+         * @param head The linked list's head.
+         *             Note that the head is guaranteed to be not null, so it contains at least one node.
+         */
+        public Solution(ListNode head) {
+            rand = new Random();
+            this.head = head;
+        }
+
+        /**
+         * Returns a random node's value.
+         */
+        public int getRandom() {
+            int result = 0;
+            int k = 1;
+            ListNode curr = head;
+            while (curr != null) {
+                if (rand.nextInt(k) == 0) {
+                    result = curr.val;
+                }
+                curr = curr.next;
+                k++;
+            }
+            return result;
+        }
+    }
+
 }
