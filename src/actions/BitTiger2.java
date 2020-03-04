@@ -1129,4 +1129,30 @@ public class BitTiger2 {
         return result;
     }
 
+    public boolean increasingTriplet(int[] nums) {
+        if (nums == null || nums.length < 3) {
+            return false;
+        }
+        int firstIndex = 0;
+        int secondIndex = -1;
+        for (int i = 1; i < nums.length; i++) {
+            if (secondIndex == -1) {
+                if (nums[i] < nums[firstIndex]) {
+                    firstIndex = i;
+                } else if (nums[i] > nums[firstIndex]) {
+                    secondIndex = i;
+                }
+            } else {
+                if (nums[i] > nums[secondIndex]) {
+                    return true;
+                } else if (nums[i] < nums[firstIndex]) {
+                    firstIndex = i;
+                } else if (nums[i] > nums[firstIndex] && nums[i] < nums[secondIndex]) {
+                    secondIndex = i;
+                }
+            }
+        }
+        return false;
+    }
+
 }
