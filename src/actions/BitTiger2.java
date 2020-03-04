@@ -1257,4 +1257,39 @@ public class BitTiger2 {
         return a;
     }
 
+    public int kthSmallest(int[][] matrix, int k) {
+        if (matrix == null || matrix.length == 0) {
+            return 0;
+        }
+        int row = matrix.length;
+        int column = matrix[0].length;
+        int left = matrix[0][0];
+        int right = matrix[row - 1][column - 1];
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            int count = kthSmallestSearch(matrix, mid);
+            if (count < k) {
+                left = mid + 1;
+            } else {
+                right = mid;
+            }
+        }
+        return left;
+    }
+
+    private int kthSmallestSearch(int[][] matrix, int mid) {
+        int i = matrix.length - 1;
+        int j = 0;
+        int count = 0;
+        while (i >= 0 && j < matrix[0].length) {
+            if (matrix[i][j] <= mid) {
+                count += i + 1;
+                j++;
+            } else {
+                i--;
+            }
+        }
+        return count;
+    }
+
 }
