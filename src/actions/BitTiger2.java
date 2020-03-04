@@ -1427,4 +1427,33 @@ public class BitTiger2 {
         return -1;
     }
 
+    public int longestSubstring(String s, int k) {
+        if (s == null || s.length() == 0) {
+            return 0;
+        }
+        HashMap<Character, Integer> map = new HashMap<>();
+        int fast = 0;
+        int slow = 0;
+        int result = 0;
+        boolean expand = true;
+        while (fast < s.length()) {
+            if (expand) {
+                if (map.getOrDefault(s.charAt(fast), 0) <= k) {
+                    map.put(s.charAt(fast), map.getOrDefault(s.charAt(fast), 0) + 1);
+                    result = Math.max(result, fast - slow + 1);
+                    fast++;
+                } else {
+                    expand = false;
+                }
+            } else {
+                if (map.get(s.charAt(slow)) == k) {
+                    expand = true;
+                }
+                map.put(s.charAt(slow), map.get(s.charAt(slow)) - 1);
+                slow++;
+            }
+        }
+        return result;
+    }
+
 }
