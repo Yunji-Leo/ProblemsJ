@@ -1085,8 +1085,48 @@ public class BitTiger2 {
 
     }
 
+    private void swap(int[] nums, int i, int j) {
+        int tmp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = tmp;
+    }
+
     private int newIndex(int index, int n) {
         return (1 + 2 * index) % (n | 1);
+    }
+
+    public int longestIncreasingPath(int[][] matrix) {
+        if (matrix == null || matrix.length == 0) {
+            return 0;
+        }
+        int[][] dp = new int[matrix.length][matrix[0].length];
+        int result = 1;
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                result = Math.max(result, longestIncreasingPathReur(matrix, dp, i, j));
+            }
+        }
+        return result;
+    }
+
+    private int longestIncreasingPathReur(int[][] matrix, int[][] dp, int i, int j) {
+        if (dp[i][j] != 0) {
+            return dp[i][j];
+        }
+        int[] dr = new int[]{1, 0, -1, 0};
+        int[] dc = new int[]{0, 1, 0, -1};
+        int result = 1;
+        for (int k = 0; k < 4; k++) {
+            int nextR = i + dr[k];
+            int nextC = j + dc[k];
+            if (nextR >= 0 && nextR < matrix.length && nextC >= 0 && nextC < matrix[0].length) {
+                if (matrix[nextR][nextC] > matrix[i][j]) {
+                    result = Math.max(result, 1 + longestIncreasingPathReur(matrix, dp, nextR, nextC));
+                }
+            }
+        }
+        dp[i][j] = result;
+        return result;
     }
 
 }
