@@ -1525,4 +1525,53 @@ public class BitTiger2 {
         return result;
     }
 
+    public int fourSumCount(int[] A, int[] B, int[] C, int[] D) {
+        if (A.length == 0 && B.length == 0 && C.length == 0 && D.length == 0) {
+            return 0;
+        }
+        int[] AB = new int[A.length * B.length];
+        if (A.length == 0) {
+            AB = B;
+        } else if (B.length == 0) {
+            AB = A;
+        }
+        if (A.length == 0 && B.length == 0) {
+            AB = new int[]{0};
+        }
+        int k = 0;
+        for (int i = 0; i < A.length; i++) {
+            for (int j = 0; j < B.length; j++) {
+                AB[k] = A[i] + B[j];
+                k++;
+            }
+        }
+
+        int[] CD = new int[C.length * D.length];
+        if (C.length == 0) {
+            CD = D;
+        } else if (D.length == 0) {
+            CD = C;
+        }
+        if (C.length == 0 && D.length == 0) {
+            CD = new int[]{0};
+        }
+        k = 0;
+        for (int i = 0; i < C.length; i++) {
+            for (int j = 0; j < D.length; j++) {
+                CD[k] = C[i] + D[j];
+                k++;
+            }
+        }
+
+        int result = 0;
+        for (int i = 0; i < AB.length; i++) {
+            for (int j = 0; j < CD.length; j++) {
+                if (AB[i] + CD[j] == 0) {
+                    result++;
+                }
+            }
+        }
+        return result;
+    }
+
 }
