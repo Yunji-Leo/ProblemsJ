@@ -1574,7 +1574,7 @@ public class BitTiger2 {
         return result;
     }
 
-    public int fourSumCount(int[] A, int[] B, int[] C, int[] D) {
+    public int fourSumCount2(int[] A, int[] B, int[] C, int[] D) {
         HashMap<Integer, Integer> map = new HashMap<>();
         for (int a : A) {
             for (int b : B) {
@@ -1625,6 +1625,39 @@ public class BitTiger2 {
             a = t;
         }
         return a;
+    }
+
+    public int triangleNumber(int[] nums) {
+        if (nums == null || nums.length < 3) {
+            return 0;
+        }
+
+        Arrays.sort(nums);
+        int result = 0;
+        for (int i = nums.length - 1; i > 1; i--) {
+            result += triangleNumberRecur(nums, i - 1, nums[i]);
+        }
+        return result;
+    }
+
+    private int triangleNumberRecur(int[] nums, int right, int target) {
+        int valid = 0;
+        for (int i = right; i > 0; i--) {
+            int l = 0;
+            int r = i - 1;
+            while (l < r) {
+                int mid = (l + r) / 2;
+                if (nums[mid] > target - nums[i]) {
+                    r = mid;
+                } else {
+                    l = mid + 1;
+                }
+            }
+            if (nums[r] > target - nums[i])
+                valid += i - r;
+
+        }
+        return valid;
     }
 
 }
