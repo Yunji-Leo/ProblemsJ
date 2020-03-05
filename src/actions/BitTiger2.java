@@ -1427,7 +1427,7 @@ public class BitTiger2 {
         return -1;
     }
 
-    public int longestSubstring(String s, int k) {
+    public int longestSubstringFake(String s, int k) {
         if (s == null || s.length() == 0) {
             return 0;
         }
@@ -1453,6 +1453,35 @@ public class BitTiger2 {
                 slow++;
             }
         }
+        return result;
+    }
+
+    public int longestSubstring(String s, int k) {
+        if (s == null || s.length() == 0) {
+            return 0;
+        }
+        char[] count = new char[26];
+        for (int i = 0; i < s.length(); i++) {
+            count[s.charAt(i) - 'a']++;
+        }
+        boolean flag = true;
+        for (int i = 0; i < count.length; i++) {
+            if (count[i] < k && count[i] > 0)
+                flag = false;
+        }
+        if (flag) {
+            return s.length();
+        }
+        int result = 0;
+        int start = 0, cur = 0;
+        while (cur < s.length()) {
+            if (count[s.charAt(cur) - 'a'] < k) {
+                result = Math.max(result, longestSubstring(s.substring(start, cur), k));
+                start = cur + 1;
+            }
+            cur++;
+        }
+        result = Math.max(result, longestSubstring(s.substring(start), k));
         return result;
     }
 
