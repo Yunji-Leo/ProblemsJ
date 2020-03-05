@@ -1485,4 +1485,28 @@ public class BitTiger2 {
         return result;
     }
 
+    class SolutionRandomPick {
+        int[] nums;
+        Random rand;
+
+        public SolutionRandomPick(int[] nums) {
+            this.nums = nums;
+            rand = new Random();
+        }
+
+        public int pick(int target) {
+            int result = -1;
+            int k = 1;
+            for (int i = 0; i < nums.length; i++) {
+                if (nums[i] == target) {
+                    if (rand.nextInt(k) == 0) {
+                        result = i;
+                    }
+                    k++;
+                }
+            }
+            return result;
+        }
+    }
+
 }
