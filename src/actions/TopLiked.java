@@ -262,5 +262,33 @@ public class TopLiked {
         return dp[0][0];
     }
 
+    public void sortColors(int[] nums) {
+        int left = 0;
+        int right = nums.length - 1;
+        int mid = 0;
+        while (mid < right) {
+            if (nums[mid] == 0) {
+                if (mid == left) {
+                    mid++;
+                    left++;
+                } else {
+                    swap(nums, mid, left);
+                    left++;
+                }
+            } else if (nums[mid] == 2) {
+                swap(nums, mid, right);
+                right--;
+            } else {
+                mid++;
+            }
+        }
+    }
+
+    private void swap(int[] nums, int i, int j) {
+        int tmp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = tmp;
+    }
+
 
 }
