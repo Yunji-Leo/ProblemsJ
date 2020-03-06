@@ -170,4 +170,33 @@ public class TopLiked {
 
         return result;
     }
+
+    public int trap(int[] height) {
+        if (height == null || height.length == 0) {
+            return 0;
+        }
+
+        int[] leftMax = new int[height.length];
+        int[] rightMax = new int[height.length];
+        int currMax = 0;
+        for (int i = 0; i < height.length; i++) {
+            currMax = Math.max(currMax, height[i]);
+            if (currMax > height[i]) {
+                leftMax[i] = currMax - height[i];
+            }
+        }
+        currMax = 0;
+        for (int i = height.length - 1; i >= 0; i--) {
+            currMax = Math.max(currMax, height[i]);
+            if (currMax > height[i]) {
+                rightMax[i] = currMax - height[i];
+            }
+        }
+
+        int result = 0;
+        for (int i = 0; i < height.length; i++) {
+            result += Math.min(leftMax[i], rightMax[i]);
+        }
+        return result;
+    }
 }
