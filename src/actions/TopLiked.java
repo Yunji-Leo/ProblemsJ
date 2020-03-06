@@ -1,5 +1,7 @@
 package actions;
 
+import actions.util.ListNode;
+
 public class TopLiked {
     public boolean isMatch(String s, String p) {
         if (p == null || p.length() == 0) {
@@ -84,5 +86,22 @@ public class TopLiked {
             dp[i][j] = -1;
         }
         return result;
+    }
+
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode first = dummy;
+        ListNode second = dummy;
+        while (n >= 0) {
+            first = first.next;
+            n--;
+        }
+        while (first != null) {
+            first = first.next;
+            second = second.next;
+        }
+        second.next = second.next.next;
+        return dummy.next;
     }
 }
