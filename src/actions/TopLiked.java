@@ -301,9 +301,45 @@ public class TopLiked {
 
         for (int i = index; i < nums.length; i++) {
             temp.add(nums[i]);
-            subsetsBacktrack(nums, index + 1, result, temp);
+            subsetsBacktrack(nums, i + 1, result, temp);
             temp.remove(temp.size() - 1);
         }
+    }
+
+    public boolean exist(char[][] board, String word) {
+        if (board == null || board.length == 0) {
+            return word == null || word.length() == 0;
+        }
+
+        int m = board.length;
+        int n = board[0].length;
+        boolean[][] visited = new boolean[m][n];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (existBacktrack(board, word, visited, i, j, 0))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean existBacktrack(char[][] board, String word, boolean[][] visited, int i, int j, int index) {
+        if (index == word.length())
+            return true;
+        if (i < 0 || i >= board.length || j < 0 || j >= board[0].length || visited[i][j] == true)
+            return false;
+        if (board[i][j] != word.charAt(index))
+            return false;
+
+        int[] dr = new int[]{1, 0, -1, 0};
+        int[] dc = new int[]{0, 1, 0, -1};
+        visited[i][j] = true;
+        for (int k = 0; k < 4; k++) {
+            if (existBacktrack(board, word, visited, i + dr[k], j + dr[k], index + 1))
+                return true;
+        }
+        visited[i][j] = false;
+        return false;
     }
 
 
