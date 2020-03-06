@@ -2,6 +2,8 @@ package actions;
 
 import actions.util.ListNode;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 public class TopLiked {
@@ -199,4 +201,26 @@ public class TopLiked {
         }
         return result;
     }
+
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> list = new ArrayList<>();
+        permuteBacktrack(list, new ArrayList<>(), nums);
+        return list;
+    }
+
+    private void permuteBacktrack(List<List<Integer>> list, List<Integer> temp, int[] nums) {
+        if (temp.size() == nums.length) {
+            list.add(new ArrayList<>(temp));
+        } else {
+            for (int i = 0; i < nums.length; i++) {
+                if (temp.contains(nums[i])) continue;
+                temp.add(nums[i]);
+                permuteBacktrack(list, temp, nums);
+                temp.remove(temp.size() - 1);
+            }
+        }
+
+    }
+
+
 }
