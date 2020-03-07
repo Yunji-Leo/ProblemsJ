@@ -3,10 +3,7 @@ package actions;
 import actions.util.ListNode;
 import actions.util.TreeNode;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 public class TopLiked {
     public boolean isMatch(String s, String p) {
@@ -448,6 +445,27 @@ public class TopLiked {
             result ^= n;
         }
         return result;
+    }
+
+    HashSet<String> wordBreakSet = new HashSet<>();
+
+    public boolean wordBreak(String s, List<String> wordDict) {
+        if (s == null || s.length() == 0) {
+            return true;
+        }
+        if (wordBreakSet.contains(s)) {
+            return false;
+        }
+
+        for (String word : wordDict) {
+            if (s.startsWith(word)) {
+                if (wordBreak(s.substring(word.length()), wordDict)) {
+                    return true;
+                }
+            }
+        }
+        wordBreakSet.add(s);
+        return false;
     }
 
 }
