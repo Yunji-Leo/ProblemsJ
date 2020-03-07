@@ -622,4 +622,16 @@ public class TopLiked {
         return dp[n];
     }
 
+    public void moveZeroes(int[] nums) {
+        int slow = 0;
+        int fast = 0;
+        while (fast < nums.length) {
+            if (nums[fast] != 0) {
+                swap(nums, slow, fast);
+                slow++;
+            }
+            fast++;
+        }
+    }
+
 }
