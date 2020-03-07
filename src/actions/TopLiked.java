@@ -342,5 +342,50 @@ public class TopLiked {
         return false;
     }
 
+    public int maximalRectangle(char[][] matrix) {
+        if (matrix == null || matrix.length == 0) {
+            return 0;
+        }
+        int maxArea = 0;
+        int[] height = new int[matrix[0].length];
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                if (matrix[i][j] == '0') {
+                    height[j] = 0;
+                } else {
+                    height[j] = 1 + height[j];
+                }
+            }
+            maxArea = Math.max(maxArea, calculateMaxArea(height));
+        }
+        return maxArea;
+    }
+
+    private int calculateMaxArea(int[] height) {
+        int result = 0;
+        int[] leftMax = new int[height.length];
+        int[] rightMax = new int[height.length];
+        leftMax[0] = -1;
+        for (int i = 1; i < height.length; i++) {
+            int p = i - 1;
+            while (p >= 0 && height[i] <= height[p]) {
+                p = leftMax[p];
+            }
+            leftMax[i] = p;
+        }
+        rightMax[rightMax.length - 1] = rightMax.length;
+        for (int i = rightMax.length - 2; i >= 0; i--) {
+            int p = i + 1;
+            while (p < rightMax.length && height[i] <= height[p]) {
+                p = rightMax[p];
+            }
+            rightMax[i] = p;
+        }
+        for (int i = 0; i < height.length; i++) {
+            result = Math.max(result, height[i] * (rightMax[i] - leftMax[i] - 1));
+        }
+        return result;
+    }
+
 
 }
