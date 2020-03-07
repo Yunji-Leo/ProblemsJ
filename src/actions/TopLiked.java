@@ -3,6 +3,7 @@ package actions;
 import actions.util.ListNode;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
@@ -384,6 +385,23 @@ public class TopLiked {
         for (int i = 0; i < height.length; i++) {
             result = Math.max(result, height[i] * (rightMax[i] - leftMax[i] - 1));
         }
+        return result;
+    }
+
+    HashMap<Integer, Integer> numTreesMap = new HashMap<>();
+
+    public int numTrees(int n) {
+        if (n == 1 || n == 0) {
+            return 1;
+        }
+        if (numTreesMap.containsKey(n)) {
+            return numTreesMap.get(n);
+        }
+        int result = 0;
+        for (int i = 1; i <= n; i++) {
+            result += numTrees(i - 1) * numTrees(n - i - 1);
+        }
+        numTreesMap.put(n, result);
         return result;
     }
 
