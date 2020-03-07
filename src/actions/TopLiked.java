@@ -442,4 +442,12 @@ public class TopLiked {
         return isSymmetricRecur(leftRoot.left, rightRoot.right) && isSymmetricRecur(leftRoot.right, rightRoot.left);
     }
 
+    public int singleNumber(int[] nums) {
+        int result = 0;
+        for (int n : nums) {
+            result ^= n;
+        }
+        return result;
+    }
+
 }
