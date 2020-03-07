@@ -422,5 +422,24 @@ public class TopLiked {
         return true;
     }
 
+    public boolean isSymmetric(TreeNode root) {
+        if (root == null) {
+            return true;
+        }
+        return isSymmetricRecur(root.left, root.right);
+    }
+
+    private boolean isSymmetricRecur(TreeNode leftRoot, TreeNode rightRoot) {
+        if (leftRoot == null && rightRoot == null) {
+            return true;
+        }
+        if (leftRoot == null || rightRoot == null) {
+            return false;
+        }
+        if (leftRoot.val != rightRoot.val) {
+            return false;
+        }
+        return isSymmetricRecur(leftRoot.left, rightRoot.right) && isSymmetricRecur(leftRoot.right, rightRoot.left);
+    }
 
 }
