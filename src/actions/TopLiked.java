@@ -607,4 +607,19 @@ public class TopLiked {
         return false;
     }
 
+    public int numSquares(int n) {
+        int[] dp = new int[n + 1];
+        dp[1] = 1;
+        for (int i = 2; i <= n; i++) {
+            int minNum = Integer.MAX_VALUE;
+            int k = 1;
+            while (k * k <= i) {
+                minNum = Math.min(minNum, dp[i - k * k] + 1);
+                k++;
+            }
+            dp[i] = minNum;
+        }
+        return dp[n];
+    }
+
 }
