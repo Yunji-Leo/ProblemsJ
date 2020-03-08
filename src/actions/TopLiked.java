@@ -685,4 +685,43 @@ public class TopLiked {
         }
     }
 
+    public String decodeString(String s) {
+        Stack<Integer> numStack = new Stack<>();
+        Stack<String> strStack = new Stack<>();
+        String curr = "";
+        int i = 0;
+        while (i < s.length()) {
+            if (Character.isDigit(s.charAt(i))) {
+                //strStack.push(curr);
+                int num = 0;
+                while (Character.isDigit(s.charAt(i))) {
+                    num = num * 10 + s.charAt(i) - '0';
+                    i++;
+                }
+                numStack.push(num);
+            } else if (s.charAt(i) == '[') {
+                strStack.push(curr);
+                curr = "";
+                i++;
+            } else if (s.charAt(i) == ']') {
+                int count = numStack.pop();
+                StringBuilder res = new StringBuilder(strStack.pop());
+                while (count > 0) {
+                    res.append(curr);
+                    count--;
+                }
+                curr = res.toString();
+                i++;
+            } else {
+                curr += s.charAt(i);
+                i++;
+            }
+        }
+        return curr;
+    }
+
+    public int[][] reconstructQueue(int[][] people) {
+
+    }
+
 }
