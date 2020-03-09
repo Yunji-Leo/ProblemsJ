@@ -813,6 +813,8 @@ public class TopLiked {
         //2:no stock hold
         //3:have stock hold
         dp[0][0] = -prices[0];
+        dp[0][1] = 0;
+        dp[0][2] = 0;
         dp[0][3] = -prices[0];
         for (int i = 1; i < prices.length; i++) {
             dp[i][0] = dp[i - 1][2] - prices[i];
@@ -823,43 +825,46 @@ public class TopLiked {
         return Math.max(dp[prices.length - 1][1], dp[prices.length - 1][2]);
     }
 
-    public int maxCoins(int[] nums) {
-        if (nums == null || nums.length == 0)
-            return 0;
-        int[][] dp = new int[nums.length][nums.length];
-        return maxCoinsDp(nums, 0, nums.length - 1, dp);
+    public int maxCoins(int[] inums) {
+        int[] nums = new int[inums.length + 2];
+        int n = 1;
+        for (int x : nums)
+            if (x > 0)
+                nums[n++] = x;
+
+        int[][] memo = new int[inums.length][inums.length];
+        return burst(memo, nums, 0, inums.length - 1);
     }
 
-    private int maxCoinsDp(int[] nums, int left, int right, int[][] dp) {
-        if (dp[left][right] != 0) {
-            return dp[left][right];
+    private int burst(int[][] memo, int[] nums, int left, int right) {
+        if (left + 1 == right)
+            return 0;
+        if (memo[left][right] > 0)
+            return memo[left][right];
+        int ans = 0;
+        for (int i = left + 1; i < right; i++) {
+            ans = Math.max(ans, nums[left] * nums[i] * nums[right] + burst(memo, nums, left, i) + burst(memo, nums, i, right));
         }
-        int maxValue = 0;
-        for (int i = left; i <= right; i++) {
-            int leftValue = 0;
-            int leftSum = 0;
-            if (i == 0) {
-                leftValue = 1;
-                leftSum = 0;
-            } else {
-                leftValue = nums[i - 1];
-                if (i != left)
-                    leftSum = maxCoinsDp(nums, left, i - 1, dp);
+        memo[left][right] = ans;
+        return ans;
+    }
+
+    public int maxCoinsIter(int[] iNums) {
+        int[] nums = new int[iNums.length + 2];
+        int n = 1;
+        for (int x : iNums)
+            if (x > 0) nums[n++] = x;
+        nums[0] = nums[n++] = 1;
+
+        int[][] dp = new int[n][n];
+        for (int k = 2; k < n; k++)
+            for (int left = 0; left < n - k; left++) {
+                int right = left + k;
+                for (int i = left + 1; i < right; i++)
+                    dp[left][right] = Math.max(dp[left][right],
+                            nums[left] * nums[i] * nums[right] + dp[left][i] + dp[i][right]);
             }
-            int rightValue = 0;
-            int rightSum = 0;
-            if (i == nums.length - 1) {
-                rightValue = 1;
-                rightSum = 0;
-            } else {
-                rightValue = nums[i + 1];
-                if (i != nums.length - 1)
-                    rightSum = maxCoinsDp(nums, i + 1, right, dp);
-            }
-            maxValue = Math.max(maxValue, leftSum + leftValue * nums[i] * rightValue + rightSum);
-        }
-        dp[left][right] = maxValue;
-        return maxValue;
+        return dp[0][n - 1];
     }
 
 }
