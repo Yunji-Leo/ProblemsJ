@@ -803,4 +803,63 @@ public class TopLiked {
             ans.add(reversed);
     }
 
+    public int maxProfit(int[] prices) {
+        if (prices == null || prices.length == 0) {
+            return 0;
+        }
+        int[][] dp = new int[prices.length][4];
+        //0:buy stock
+        //1:sell stock
+        //2:no stock hold
+        //3:have stock hold
+        dp[0][0] = -prices[0];
+        dp[0][3] = -prices[0];
+        for (int i = 1; i < prices.length; i++) {
+            dp[i][0] = dp[i - 1][2] - prices[i];
+            dp[i][1] = Math.max(dp[i - 1][0], dp[i - 1][3]) + prices[i];
+            dp[i][2] = Math.max(dp[i - 1][1], dp[i - 1][2]);
+            dp[i][3] = Math.max(dp[i - 1][0], dp[i - 1][3]);
+        }
+        return Math.max(dp[prices.length - 1][1], dp[prices.length - 1][2]);
+    }
+
+    public int maxCoins(int[] nums) {
+        if (nums == null || nums.length == 0)
+            return 0;
+        int[][] dp = new int[nums.length][nums.length];
+        return maxCoinsDp(nums, 0, nums.length - 1, dp);
+    }
+
+    private int maxCoinsDp(int[] nums, int left, int right, int[][] dp) {
+        if (dp[left][right] != 0) {
+            return dp[left][right];
+        }
+        int maxValue = 0;
+        for (int i = left; i <= right; i++) {
+            int leftValue = 0;
+            int leftSum = 0;
+            if (i == 0) {
+                leftValue = 1;
+                leftSum = 0;
+            } else {
+                leftValue = nums[i - 1];
+                if (i != left)
+                    leftSum = maxCoinsDp(nums, left, i - 1, dp);
+            }
+            int rightValue = 0;
+            int rightSum = 0;
+            if (i == nums.length - 1) {
+                rightValue = 1;
+                rightSum = 0;
+            } else {
+                rightValue = nums[i + 1];
+                if (i != nums.length - 1)
+                    rightSum = maxCoinsDp(nums, i + 1, right, dp);
+            }
+            maxValue = Math.max(maxValue, leftSum + leftValue * nums[i] * rightValue + rightSum);
+        }
+        dp[left][right] = maxValue;
+        return maxValue;
+    }
+
 }

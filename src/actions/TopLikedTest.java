@@ -7,6 +7,7 @@ public class TopLikedTest {
 
     @org.junit.Test
     public void testMethod() {
+        test.maxCoins(new int[]{3, 1, 2});
         test.decodeString("3[a2[c]]");
         test.maximalRectangle(new char[][]{{'0', '1'}, {'1', '0'}});
         test.isMatch("aa", "a*");
