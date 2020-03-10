@@ -976,4 +976,21 @@ public class TopLiked {
             return memo[i][sum + 1000];
         }
     }
+
+    int diameterMax = 0;
+
+    public int diameterOfBinaryTree(TreeNode root) {
+        longestBranch(root);
+        return diameterMax == 0 ? 0 : diameterMax - 1;
+    }
+
+    private int longestBranch(TreeNode node) {
+        if (node == null) {
+            return 0;
+        }
+        int leftMax = longestBranch(node.left);
+        int rightMax = longestBranch(node.right);
+        diameterMax = Math.max(diameterMax, leftMax + rightMax + 1);
+        return Math.max(leftMax, rightMax) + 1;
+    }
 }
