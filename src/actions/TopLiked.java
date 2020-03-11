@@ -1081,4 +1081,22 @@ public class TopLiked {
         }
         return ans;
     }
+
+    public int jump(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        int[] greedy = new int[nums.length];
+        Arrays.fill(greedy, Integer.MAX_VALUE);
+        greedy[0] = 0;
+        for (int i = 0; i < nums.length - 1; i++) {
+            for (int j = 1; j <= nums[i]; j++) {
+                int dest = i + j;
+                if (dest >= nums.length)
+                    dest = nums.length - 1;
+                greedy[dest] = Math.min(greedy[dest], greedy[i] + 1);
+            }
+        }
+        return greedy[nums.length - 1] == Integer.MAX_VALUE ? 0 : greedy[nums.length - 1];
+    }
 }
