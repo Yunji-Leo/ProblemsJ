@@ -80,4 +80,24 @@ public class TopInterviewed {
         }
         return sum + nums[nums.length - 1];
     }
+
+    public int removeDuplicates(int[] nums) {
+        if (nums == null || nums.length == 0)
+            return 0;
+        int index = 0;
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] != nums[i - 1]) {
+                index++;
+                nums[index] = nums[i];
+            }
+        }
+        return index + 1;
+
+    }
+
+    private void swap(int[] nums, int i, int j) {
+        int tmp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = tmp;
+    }
 }
