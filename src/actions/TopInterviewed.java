@@ -1,5 +1,8 @@
 package actions;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class TopInterviewed {
     public int reverse(int x) {
         int result = 0;
@@ -118,5 +121,55 @@ public class TopInterviewed {
             }
         }
         return -1;
+    }
+
+    public boolean isValidSudoku(char[][] board) {
+        Set seen = new HashSet();
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                char number = board[i][j];
+                if (number != '.') {
+                    if (!seen.add(number + " in row " + i) ||
+                            !seen.add(number + " in column " + j) ||
+                            !seen.add(number + " in block " + i / 3 + "-" + j / 3))
+                        return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean isMatch(String s, String p) {
+        int[][] dp = new int[s.length()][p.length()];
+        return isMatchRecur(s, p, 0, 0, dp);
+    }
+
+    private boolean isMatchRecur(String s, String p, int sIndex, int pIndex, int[][] dp) {
+        if (sIndex == s.length()) {
+            while (pIndex < p.length()) {
+                if (p.charAt(pIndex) != '*')
+                    return false;
+                pIndex++;
+            }
+            return true;
+        }
+        if (pIndex == p.length()) {
+            return false;
+        }
+
+        if (dp[sIndex][pIndex] != 0)
+            return dp[sIndex][pIndex] == 1;
+
+        if (s.charAt(sIndex) == p.charAt(pIndex) || p.charAt(pIndex) == '?') {
+            if (isMatchRecur(s, p, sIndex + 1, pIndex + 1, dp))
+                dp[sIndex][pIndex] = 1;
+
+        } else if (p.charAt(pIndex) == '*') {
+            if (isMatchRecur(s, p, sIndex + 1, pIndex, dp) || isMatchRecur(s, p, sIndex, pIndex + 1, dp))
+                dp[sIndex][pIndex] = 1;
+        } else {
+            dp[sIndex][pIndex] = 0;
+        }
+        return dp[sIndex][pIndex] == 1;
     }
 }
