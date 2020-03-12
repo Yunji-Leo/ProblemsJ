@@ -140,6 +140,13 @@ public class TopInterviewed {
     }
 
     public boolean isMatch(String s, String p) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < p.length(); i++) {
+            if (p.charAt(i) == '*' && i > 0 && p.charAt(i - 1) == '*')
+                continue;
+            sb.append(p.charAt(i));
+        }
+        p = sb.toString();
         int[][] dp = new int[s.length()][p.length()];
         return isMatchRecur(s, p, 0, 0, dp);
     }
@@ -171,5 +178,27 @@ public class TopInterviewed {
             dp[sIndex][pIndex] = 0;
         }
         return dp[sIndex][pIndex] == 1;
+    }
+
+    public boolean isMatchDP(String s, String p) {
+        boolean[][] dp = new boolean[s.length() + 1][p.length() + 1];
+        dp[s.length()][p.length()] = true;
+        for (int i = p.length() - 1; i >= 0; i--) {
+            if (p.charAt(i) != '*')
+                break;
+            else
+                dp[s.length()][i] = true;
+        }
+        for (int i = s.length() - 1; i >= 0; i--) {
+            for (int j = p.length() - 1; j >= 0; j--) {
+                if (s.charAt(i) == p.charAt(j) || p.charAt(j) == '?')
+                    dp[i][j] = dp[i + 1][j + 1];
+                else if (p.charAt(j) == '*')
+                    dp[i][j] = dp[i + 1][j] || dp[i][j + 1];
+                else
+                    dp[i][j] = false;
+            }
+        }
+        return dp[0][0];
     }
 }
