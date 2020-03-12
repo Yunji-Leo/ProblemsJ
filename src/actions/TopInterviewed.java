@@ -1,7 +1,8 @@
 package actions;
 
-import java.util.HashSet;
-import java.util.Set;
+import actions.util.TreeNode;
+
+import java.util.*;
 
 public class TopInterviewed {
     public int reverse(int x) {
@@ -289,6 +290,89 @@ public class TopInterviewed {
                 matrix[i][0] = 0;
             }
         }
-
     }
+
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        List<List<Integer>> result = new ArrayList<>();
+        if (root == null)
+            return result;
+
+        Queue<TreeNode> nodeQ = new LinkedList<>();
+        Queue<Integer> levelQ = new LinkedList<>();
+
+        nodeQ.add(root);
+        levelQ.add(1);
+        int preLevel = 0;
+        while (!nodeQ.isEmpty()) {
+            TreeNode node = nodeQ.poll();
+            int curLevel = levelQ.poll();
+            if (curLevel != preLevel) {
+                List<Integer> res = new ArrayList<>();
+                result.add(res);
+                preLevel = curLevel;
+            }
+            List<Integer> res = result.get(curLevel - 1);
+            if (curLevel % 2 == 1)
+                res.add(node.val);
+            else
+                res.add(0, node.val);
+
+            if (node.left != null) {
+                nodeQ.add(node.left);
+                levelQ.add(curLevel + 1);
+            }
+            if (node.right != null) {
+                nodeQ.add(node.right);
+                levelQ.add(curLevel + 1);
+            }
+        }
+        return result;
+    }
+
+    public List<List<Integer>> generate(int numRows) {
+        List<List<Integer>> triangle = new ArrayList<>();
+        if (numRows == 0) {
+            return triangle;
+        }
+
+        triangle.add(new ArrayList<>());
+        triangle.get(0).add(1);
+
+        for (int rowNum = 1; rowNum < numRows; rowNum++) {
+            List<Integer> row = new ArrayList<>();
+            List<Integer> prevRow = triangle.get(rowNum - 1);
+            row.add(1);
+
+            for (int j = 1; j < rowNum; j++) {
+                row.add(prevRow.get(j - 1) + prevRow.get(j));
+            }
+            row.add(1);
+            triangle.add(row);
+        }
+        return triangle;
+    }
+
+    public boolean isPalindrome(String s) {
+        if (s.isEmpty())
+            return true;
+        int head = 0, tail = s.length() - 1;
+        char cHead, cTail;
+        while (head < tail) {
+            cHead = s.charAt(head);
+            cTail = s.charAt(tail);
+            if (!Character.isLetterOrDigit(cHead)) {
+                head++;
+            } else if (!Character.isLetterOrDigit(cTail)) {
+                tail--;
+            } else {
+                if (Character.toLowerCase(cHead) != Character.toLowerCase(cTail)) {
+                    return false;
+                }
+                head++;
+                tail--;
+            }
+        }
+        return true;
+    }
+
 }
